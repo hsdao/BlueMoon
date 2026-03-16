@@ -25,3 +25,5 @@ replay_pid*
 .idea/
 *.iml
 target/
+# Database config - chứa password MySQL, không commit
+config.properties

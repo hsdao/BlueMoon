@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <javafx.version>21</javafx.version>
+        <javafx.version>21.0.10</javafx.version>
     </properties>
 
     <dependencies>
@@ -31,6 +31,8 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
+
 
         <!-- AtlantaFX Theme -->
         <dependency>
@@ -50,13 +52,19 @@
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>kernel</artifactId>
-            <version>8.0.2</version>
+            <version>8.0.5</version>
         </dependency>
 
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>layout</artifactId>
-            <version>8.0.2</version>
+            <version>8.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>8.0.5</version>
         </dependency>
 
         <!-- Apache POI (Excel) -->
@@ -86,6 +94,13 @@
                     <source>21</source>
                     <target>21</target>
                 </configuration>
+            </plugin>
+
+            <!-- Maven Jar Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
             </plugin>
 
             <!-- JavaFX Run Plugin -->

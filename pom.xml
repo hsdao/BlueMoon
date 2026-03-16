@@ -31,8 +31,6 @@
             <version>${javafx.version}</version>
         </dependency>
 
-
-
         <!-- AtlantaFX Theme -->
         <dependency>
             <groupId>io.github.mkpaz</groupId>
@@ -116,30 +114,6 @@
                 <configuration>
                     <mainClass>application.Main</mainClass>
                 </configuration>
-            </plugin>
-            <!--Maven Shade Plugin-->
-            <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-shade-plugin</artifactId>
-            <version>3.6.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>application.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>

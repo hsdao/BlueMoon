@@ -1,21 +1,25 @@
 package models;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class User {
     private int id;
     private String username;
     private String password;
     private String role;
-    private String fullName;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public User() {}
-    public User(int id, String username, String password, String role, String fullName, LocalDateTime createdAt) {
-        this.id = id; this.username = username; this.password = password;
-        this.role = role; this.fullName = fullName; this.createdAt = createdAt;
+
+    // Hàm khởi tạo này dùng khi ADMIN tạo tài khoản mới
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
 
+    // --- Getter và Setter ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getUsername() { return username; }
@@ -24,8 +28,8 @@ public class User {
     public void setPassword(String password) { this.password = password; }
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public Timestamp getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
 }

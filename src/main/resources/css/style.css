@@ -34,10 +34,6 @@
     -fx-size: 45px !important;
 }
 
-.table-view .column-header:last-visible {
-    -fx-border-width: 0 0 1 0 !important;
-}
-
 .table-row-cell:empty {
     -fx-background-color: white !important;
 }
@@ -46,6 +42,11 @@
     -fx-border-width: 0 !important;
 }
 
-.table-row-cell:not(:empty):hover {
+.table-row-cell:hover {
     -fx-background-color: #F6F8FA !important;
+}
+.table-row-cell:empty:hover,
+.table-row-cell:empty {
+    -fx-background-color: white !important;
+    -fx-border-width: 0 !important;
 }

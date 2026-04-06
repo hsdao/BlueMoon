@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="645.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CONTROLLER_NAME">
+   <children>
+      <HBox layoutY="3.0" prefHeight="645.0" prefWidth="1120.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="645.0" prefWidth="560.0" spacing="10.0" style="-fx-background-color: #1a1e2a;">
+               <children>
+                  <Label text="BLUE MOON" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+                  <Label text="Apartment Management Sorfware" textFill="WHITE">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Label>
+                  <Label text="Residency, Household and Fee management system" textFill="WHITE" />
+               </children></VBox>
+            <VBox alignment="CENTER" prefHeight="645.0" prefWidth="560.0" spacing="40.0">
+               <children>
+                  <Label alignment="CENTER" text="System Login">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtUsername" prefHeight="40.0" prefWidth="350.0" promptText="Username" />
+                  <PasswordField fx:id="txtPassword" prefHeight="40.0" prefWidth="350.0" promptText="Enter password" styleClass="accent" />
+                  <ComboBox fx:id="cmbRole" prefHeight="40.0" prefWidth="350.0" promptText="Role" />
+                  <Button fx:id="btnLogin" mnemonicParsing="false" prefHeight="40.0" prefWidth="350.0" style="-fx-background-color: #674299;" styleClass="accent" text="Login" />
+                  <Label text="BlueMoon v1.0 - JDK 21 - JavaFX 21 - AtlantaFX" textAlignment="CENTER" textFill="#ae9a9a">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="80.0" left="80.0" right="80.0" top="80.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

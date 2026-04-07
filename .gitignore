@@ -22,7 +22,3 @@ replay_pid*
 target/
 # Database config - chứa password MySQL, không commit
 config.properties
-# Bỏ qua thư mục tài liệu vì chỉ dùng để đọc
-Tài liệu/
-# Cố tình để config.properties được up lên nhánh cho nhóm xài chung
-# config.properties

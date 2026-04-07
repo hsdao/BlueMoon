@@ -16,8 +16,10 @@ import java.util.ResourceBundle;
 public class HoKhauFormController implements Initializable {
     @FXML private Label lblTitle;
     @FXML private TextField txtMaHo;
+    @FXML private TextField txtChuHoId;
     @FXML private TextField txtSdt;
     @FXML private TextField txtDiaChi;
+    @FXML private TextField txtSoThanhVien;
     @FXML private DatePicker dpNgayTao;
     @FXML private ComboBox<String> cbTrangThai;
     @FXML private TextArea txtGhiChu; // Trường mới
@@ -53,8 +55,10 @@ public class HoKhauFormController implements Initializable {
         lblTitle.setText("Sửa Hộ Khẩu");
 
         txtMaHo.setText(hk.getMaHo());
+        txtChuHoId.setText(hk.getChuHoId() == null ? "" : String.valueOf(hk.getChuHoId()));
         txtSdt.setText(hk.getSoDienThoaiChuHo());
         txtDiaChi.setText(hk.getDiaChi());
+        txtSoThanhVien.setText(String.valueOf(hk.getSoThanhVien()));
         cbTrangThai.setValue(hk.getTrangThai());
         txtGhiChu.setText(hk.getGhiChu());
 
@@ -66,38 +70,48 @@ public class HoKhauFormController implements Initializable {
     // Xác thực & lưu hộ khẩu
     @FXML
     private void handleSave() {
-        if (txtSdt.getText().trim().isEmpty() || txtDiaChi.getText().trim().isEmpty()) {
-            showAlert("Lỗi nhập liệu", "Vui lòng nhập Địa chỉ và Số điện thoại.");
+        // 1. Kiểm tra rỗng
+        if (txtSdt.getText().trim().isEmpty() || txtDiaChi.getText().trim().isEmpty() || txtSoThanhVien.getText().trim().isEmpty()) {
+            showAlert("Lỗi nhập liệu", "Vui lòng nhập đầy đủ các trường bắt buộc (*).");
             return;
         }
-
-        String sdt = txtSdt.getText().trim();
-        if (!sdt.matches("^\\+?\\d{9,14}$")) {
-            showAlert("Lỗi nhập liệu", "Số điện thoại không hợp lệ!\nChỉ được chứa số (hoặc dấu + ở đầu).");
-            return;
-        }
-
         HoKhau hk = isEditMode ? hoKhauCurent : new HoKhau();
+
+        try {
+            String chuHoIdStr = txtChuHoId.getText().trim();
+            hk.setChuHoId(chuHoIdStr.isEmpty() ? null : Integer.parseInt(chuHoIdStr));
+        } catch (NumberFormatException e) {
+            showAlert("Lỗi", "ID Chủ hộ phải là số!");
+            return;
+        }
+
         hk.setMaHo(txtMaHo.getText().trim());
-        hk.setSoDienThoaiChuHo(sdt);
+        hk.setSoDienThoaiChuHo(txtSdt.getText().trim());
         hk.setDiaChi(txtDiaChi.getText().trim());
         hk.setTrangThai(cbTrangThai.getValue());
-        hk.setGhiChu(txtGhiChu.getText().trim());
+
+        String ghiChu = txtGhiChu.getText() == null ? "" : txtGhiChu.getText().trim();
+        hk.setGhiChu(ghiChu);
+
+        try {
+            hk.setSoThanhVien(Integer.parseInt(txtSoThanhVien.getText().trim()));
+        } catch (NumberFormatException e) {
+            hk.setSoThanhVien(0);
+        }
 
         boolean success;
         if (!isEditMode) {
-            hk.setNgayTao(Timestamp.valueOf(LocalDateTime.now()));
-            hk.setSoThanhVien(0);
+            hk.setNgayTao(new java.sql.Timestamp(System.currentTimeMillis()));
             success = service.addHoKhau(hk);
         } else {
             success = service.updateHoKhau(hk);
         }
 
         if (success) {
-            parentController.loadDataFromDB();
+            parentController.loadDataFromDB(); // Tải lại bảng ở màn hình chính
             closeWindow();
         } else {
-            showAlert("Lỗi Database", "Không thể lưu dữ liệu. Có thể SĐT đã bị trùng!");
+            showAlert("Lỗi Database", "Lưu thất bại! Kiểm tra lại kết nối DB hoặc trùng SĐT/Mã hộ.");
         }
     }
 

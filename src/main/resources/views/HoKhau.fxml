@@ -53,14 +53,15 @@
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
                             <columns>
-                                <TableColumn fx:id="colMaHo" reorderable="false" text="Mã hộ khẩu" />
-                                <TableColumn fx:id="colChuHo" reorderable="false" text="ID Chủ hộ" />
-                                <TableColumn fx:id="colSdt" reorderable="false" text="Số điện thoại" />
-                                <TableColumn fx:id="colDiaChi" reorderable="false" text="Địa chỉ" />
-                                <TableColumn fx:id="colSoThanhVien" reorderable="false" text="Số TV" />
-                                <TableColumn fx:id="colNgayTao" reorderable="false" text="Ngày tạo" />
-                                <TableColumn fx:id="colTrangThai" reorderable="false" text="Trạng thái" />
-                                <TableColumn fx:id="colHanhDong" reorderable="false" text="Hành động" />
+                                <TableColumn fx:id="colMaHo" text="Mã hộ khẩu" />
+                                <TableColumn fx:id="colChuHo" text="ID Chủ hộ" />
+                                <TableColumn fx:id="colSdt" text="Số điện thoại" />
+                                <TableColumn fx:id="colDiaChi" text="Địa chỉ" />
+                                <TableColumn fx:id="colSoThanhVien" text="Số TV" />
+                                <TableColumn fx:id="colNgayTao" text="Ngày tạo" />
+                                <TableColumn fx:id="colTrangThai" text="Trạng thái" />
+                                <TableColumn fx:id="colGhiChu" text="Ghi chú" />
+                                <TableColumn fx:id="colHanhDong" text="Hành động" />
                             </columns>
                         </TableView>
                     </children>

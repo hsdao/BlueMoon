@@ -16,12 +16,16 @@ import javafx.geometry.Pos;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
+import java.text.SimpleDateFormat;
 
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 public class HoKhauController implements Initializable {
 
@@ -34,6 +38,8 @@ public class HoKhauController implements Initializable {
     @FXML private TableColumn<HoKhau, Timestamp> colNgayTao;
     @FXML private TableColumn<HoKhau, String> colTrangThai;
     @FXML private TableColumn<HoKhau, Void> colHanhDong;
+    @FXML private TableColumn<HoKhau, String> colGhiChu;
+    @FXML private TextField searchField;
 
     private ObservableList<HoKhau> hoKhauList;
     private final HoKhauService service = new HoKhauService();
@@ -43,6 +49,7 @@ public class HoKhauController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupTable();
         loadDataFromDB();
+        setupSearch();
     }
 
     // Bảng và nút hành động (Sửa, Xóa)
@@ -54,6 +61,20 @@ public class HoKhauController implements Initializable {
         colSoThanhVien.setCellValueFactory(new PropertyValueFactory<>("soThanhVien"));
         colNgayTao.setCellValueFactory(new PropertyValueFactory<>("ngayTao"));
         colTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+
+        colNgayTao.setCellFactory(column -> new TableCell<HoKhau, Timestamp>() {
+            private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(format.format(item));
+                }
+            }
+        });
 
         Callback<TableColumn<HoKhau, Void>, TableCell<HoKhau, Void>> cellFactory = new Callback<>() {
             @Override
@@ -90,11 +111,42 @@ public class HoKhauController implements Initializable {
         colHanhDong.setCellFactory(cellFactory);
     }
 
+    private void setupSearch() {
+        FilteredList<HoKhau> filteredData = new FilteredList<>(hoKhauList, p -> true);
+
+        searchField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            filteredData.setPredicate(hoKhau -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (hoKhau.getMaHo() != null && hoKhau.getMaHo().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                if (hoKhau.getDiaChi() != null && hoKhau.getDiaChi().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                if (hoKhau.getSoDienThoaiChuHo() != null && hoKhau.getSoDienThoaiChuHo().contains(lowerCaseFilter)) {
+                    return true;
+                }
+
+                return false;
+            });
+        });
+
+        tableHoKhau.setItems(filteredData);
+    }
+
     // Tải danh sách hộ khẩu từ DB vào bảng
     public void loadDataFromDB() {
         List<HoKhau> dbList = service.getAllHoKhau();
         hoKhauList = FXCollections.observableArrayList(dbList);
         tableHoKhau.setItems(hoKhauList);
+        setupSearch();
     }
 
     // Form thêm hộ khẩu

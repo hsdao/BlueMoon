@@ -24,29 +24,29 @@
                 <ColumnConstraints hgrow="ALWAYS" />
             </columnConstraints>
             <children>
-                <!-- Trường Mã Hộ Khẩu (bắt buộc) -->
                 <Label text="Mã Hộ Khẩu (*):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField fx:id="txtMaHo" promptText="Mã hộ khẩu" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                <!-- Trường Số Điện Thoại (bắt buộc) -->
-                <Label text="Số điện thoại (*):" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <TextField fx:id="txtSdt" promptText="Nhập 10-11 số" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="ID Chủ hộ:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtChuHoId" promptText="Nhập ID (nếu có)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <!-- Trường Địa Chỉ (bắt buộc) -->
-                <Label text="Địa chỉ (*):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="txtDiaChi" promptText="Số nhà, đường..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label text="Số điện thoại (*):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtSdt" promptText="Nhập 10-11 số" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                <!-- Trường Ngày Tạo (tùy chọn) -->
-                <Label text="Ngày tạo:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <DatePicker fx:id="dpNgayTao" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Địa chỉ (*):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="txtDiaChi" promptText="Số nhà, đường..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                <!-- Trường Trạng Thái (tùy chọn) -->
-                <Label text="Trạng thái:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <ComboBox fx:id="cbTrangThai" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label text="Số thành viên (*):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="txtSoThanhVien" promptText="Nhập số lượng..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                <!-- Trường Ghi Chú (tùy chọn, textarea) -->
-                <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.valignment="TOP" />
-                <TextArea fx:id="txtGhiChu" prefRowCount="3" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label text="Ngày tạo:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <DatePicker fx:id="dpNgayTao" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                <Label text="Trạng thái:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <ComboBox fx:id="cbTrangThai" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.valignment="TOP" />
+                <TextArea fx:id="txtGhiChu" prefRowCount="3" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             </children>
         </GridPane>
 

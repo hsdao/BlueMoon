@@ -6,12 +6,12 @@ INSERT INTO quan_he (ten_quan_he) VALUES
     ('Chủ hộ'), ('Vợ'), ('Chồng'), ('Con trai'), ('Con gái'), ('Bố'), ('Mẹ');
 
 -- 2. Hộ khẩu (Tạo 5 hộ khẩu mẫu - chu_ho_id để tạm thời là NULL)
-INSERT INTO ho_khau (ma_ho, so_dien_thoai_chu_ho, so_thanh_vien, dia_chi, ngay_tao) VALUES
-    ('HK001', '0981001001', '7', 'Phòng 101-A', '2024-01-01'),
-    ('HK002', '0981001002', '2', 'Phòng 102-A', '2024-01-05'),
-    ('HK003', '0981001003', '1', 'Phòng 201-B', '2024-02-10'),
-    ('HK004', '0981001004', '5', 'Phòng 305-C', '2024-03-15'),
-    ('HK005', '0981001005', '3', 'Phòng 402-D', '2024-04-20');
+INSERT INTO ho_khau (ma_ho, so_dien_thoai_chu_ho, dia_chi, ngay_tao) VALUES
+    ('HK001', '0981001001', 'Phòng 101-A', '2024-01-01'),
+    ('HK002', '0981001002', 'Phòng 102-A', '2024-01-05'),
+    ('HK003', '0981001003', 'Phòng 201-B', '2024-02-10'),
+    ('HK004', '0981001004', 'Phòng 305-C', '2024-03-15'),
+    ('HK005', '0981001005', 'Phòng 402-D', '2024-04-20');
 
 -- 3. Nhân khẩu (Tạo 10 nhân khẩu phân bổ vào 5 hộ trên)
 INSERT INTO nhan_khau (ho_khau_id, ho_ten, ngay_sinh, gioi_tinh, cccd, quan_he_id, so_dien_thoai) VALUES

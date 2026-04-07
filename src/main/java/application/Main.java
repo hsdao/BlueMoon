@@ -2,18 +2,26 @@ package application;
 
 import atlantafx.base.theme.PrimerLight;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-        // Set Theme AtlantaFX (PrimerLight) defaults as required in specs
-        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-        
-        primaryStage.setTitle("BlueMoon - Quản lý thu phí chung cư");
-        primaryStage.setWidth(1120);
-        primaryStage.setHeight(645);
-        primaryStage.show();
+        try {
+            Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/HoKhau.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1440, 1024);
+
+            primaryStage.setTitle("BlueMoon - Quản lý thu phí chung cư");
+            primaryStage.setScene(scene);
+            primaryStage.centerOnScreen();
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

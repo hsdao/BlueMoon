@@ -9,7 +9,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         // Set Theme AtlantaFX (PrimerLight) defaults as required in specs
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-        
+
         primaryStage.setTitle("BlueMoon - Quản lý thu phí chung cư");
         primaryStage.setWidth(1120);
         primaryStage.setHeight(645);

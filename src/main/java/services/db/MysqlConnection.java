@@ -1,4 +1,4 @@
-package services.db;
+package services.db; // Dòng này cực kỳ quan trọng, nó báo cho Java biết vị trí chính xác của file
 
 import java.sql.Connection;
 import java.sql.DriverManager;

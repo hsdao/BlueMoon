@@ -9,10 +9,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-// DAO - Interact với bảng ho_khau trong database
 public class HoKhauDAO {
 
-    // 1. Lấy danh sách toàn bộ hộ khẩu từ database
+    // 1. Lấy danh sách toàn bộ hộ khẩu
     public List<HoKhau> getAllHoKhau() {
         List<HoKhau> danhSach = new ArrayList<>();
         String sql = "SELECT * FROM ho_khau";
@@ -27,6 +26,7 @@ public class HoKhauDAO {
                 hk.setId(rs.getInt("id"));
                 hk.setMaHo(rs.getString("ma_ho"));
 
+                // Xử lý Integer có thể NULL
                 Object chuHoIdObj = rs.getObject("chu_ho_id");
                 hk.setChuHoId(chuHoIdObj != null ? ((Number) chuHoIdObj).intValue() : null);
 
@@ -45,7 +45,7 @@ public class HoKhauDAO {
         return danhSach;
     }
 
-    // 2. Thêm hộ khẩu mới vào database
+    // 2. Thêm hộ khẩu mới
     public boolean themHoKhau(HoKhau hk) {
         String sql = "INSERT INTO ho_khau(ma_ho, chu_ho_id, so_dien_thoai_chu_ho, so_thanh_vien, dia_chi, ngay_tao, trang_thai, ghi_chu) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -54,7 +54,6 @@ public class HoKhauDAO {
 
             pstmt.setString(1, hk.getMaHo());
 
-            // Nếu chu_ho_id không có thì ghi NULL vào database
             if (hk.getChuHoId() != null) pstmt.setInt(2, hk.getChuHoId());
             else pstmt.setNull(2, Types.INTEGER);
 
@@ -73,7 +72,7 @@ public class HoKhauDAO {
         }
     }
 
-    // 3. Cập nhật thông tin hộ khẩu theo ID
+    // 3. Hàm UPDATE (Sửa thông tin hộ khẩu)
     public boolean capNhatHoKhau(HoKhau hk) {
         String sql = "UPDATE ho_khau SET ma_ho=?, chu_ho_id=?, so_dien_thoai_chu_ho=?, so_thanh_vien=?, dia_chi=?, ngay_tao=?, trang_thai=?, ghi_chu=? WHERE id=?";
 
@@ -85,6 +84,13 @@ public class HoKhauDAO {
             if (hk.getChuHoId() != null) pstmt.setInt(2, hk.getChuHoId());
             else pstmt.setNull(2, Types.INTEGER);
 
+            pstmt.setString(3, hk.getSoDienThoaiChuHo());
+            pstmt.setInt(4, hk.getSoThanhVien());
+            pstmt.setString(5, hk.getDiaChi());
+            pstmt.setTimestamp(6, hk.getNgayTao());
+            pstmt.setString(7, hk.getTrangThai());
+            pstmt.setString(8, hk.getGhiChu());
+
             pstmt.setInt(9, hk.getId());
 
             return pstmt.executeUpdate() > 0;
@@ -95,7 +101,7 @@ public class HoKhauDAO {
         }
     }
 
-    // 4. Xóa hộ khẩu theo ID
+    // 4. Hàm DELETE (Xóa hộ khẩu)
     public boolean xoaHoKhau(int id) {
         String sql = "DELETE FROM ho_khau WHERE id = ?";
         try (Connection conn = services.db.MysqlConnection.getConnection();

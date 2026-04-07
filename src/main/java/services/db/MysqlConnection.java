@@ -9,7 +9,7 @@ public class MysqlConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/bluemoon?useUnicode=true&characterEncoding=utf-8";
     private static final String USER = "root";
-    private static final String PASSWORD = "1127";
+    private static final String PASSWORD = "";
 
     private MysqlConnection() {}
 

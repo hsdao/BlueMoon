@@ -1,15 +1,14 @@
 package controllers;
 
 import models.HoKhau;
-import services.HoKhauService;
+import services.HoKhauDAO;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import java.time.LocalDateTime;
 
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -25,7 +24,7 @@ public class HoKhauFormController implements Initializable {
     @FXML private TextArea txtGhiChu; // Trường mới
 
     private HoKhau hoKhauCurent;
-    private final HoKhauService service = new HoKhauService();
+    private final HoKhauDAO dao = new HoKhauDAO();
     private boolean isEditMode = false;
     private HoKhauController parentController;
 
@@ -99,19 +98,20 @@ public class HoKhauFormController implements Initializable {
             hk.setSoThanhVien(0);
         }
 
-        boolean success;
         if (!isEditMode) {
             hk.setNgayTao(new java.sql.Timestamp(System.currentTimeMillis()));
-            success = service.addHoKhau(hk);
+            boolean success = dao.themHoKhau(hk);
+            if (success) {
+                parentController.loadDataFromDB();
+                closeWindow();
+            } else {
+                showAlert("Lỗi Database", "Không thể thêm mới. Mã hộ hoặc SĐT đã tồn tại!");
+            }
         } else {
-            success = service.updateHoKhau(hk);
-        }
+            dao.capNhatHoKhau(hk);
 
-        if (success) {
-            parentController.loadDataFromDB(); // Tải lại bảng ở màn hình chính
+            parentController.loadDataFromDB();
             closeWindow();
-        } else {
-            showAlert("Lỗi Database", "Lưu thất bại! Kiểm tra lại kết nối DB hoặc trùng SĐT/Mã hộ.");
         }
     }
 

@@ -1,7 +1,7 @@
 package controllers;
 
 import models.HoKhau;
-import services.HoKhauService;
+import services.HoKhauDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,7 +42,7 @@ public class HoKhauController implements Initializable {
     @FXML private TextField searchField;
 
     private ObservableList<HoKhau> hoKhauList;
-    private final HoKhauService service = new HoKhauService();
+    private final HoKhauDAO dao = new HoKhauDAO();
 
     // Khởi tạo controller
     @Override
@@ -143,7 +143,7 @@ public class HoKhauController implements Initializable {
 
     // Tải danh sách hộ khẩu từ DB vào bảng
     public void loadDataFromDB() {
-        List<HoKhau> dbList = service.getAllHoKhau();
+        List<HoKhau> dbList = dao.getAllHoKhau();
         hoKhauList = FXCollections.observableArrayList(dbList);
         tableHoKhau.setItems(hoKhauList);
         setupSearch();
@@ -189,7 +189,7 @@ public class HoKhauController implements Initializable {
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            if (service.deleteHoKhau(hk.getId())) {
+            if (dao.xoaHoKhau(hk.getId())) {
                 loadDataFromDB();
             } else {
                 Alert error = new Alert(Alert.AlertType.ERROR);

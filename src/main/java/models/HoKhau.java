@@ -5,11 +5,11 @@ import java.sql.Timestamp;
 public class HoKhau {
     private int id;
     private String maHo;
-    private Integer chuHoId;
+    private Integer chuHoId; // Dùng Integer vì lúc mới tạo hộ khẩu có thể chưa có chủ hộ (NULL)
     private String soDienThoaiChuHo;
     private int soThanhVien;
     private String diaChi;
-    private Timestamp ngayTao;
+    private Timestamp ngayTao; // Dùng Timestamp cho ngày giờ
     private String trangThai;
     private String ghiChu;
 

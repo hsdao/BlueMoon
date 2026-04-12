@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefWidth="1120.0" prefHeight="645.0" style="-fx-background-color: #F6F8FA;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FormKhoanThuController">
+   <children>
+      <VBox layoutX="30.0" layoutY="30.0" spacing="20.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #24292F;" text="Thông Tin Khoản Thu">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            
+            <VBox spacing="8.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Mã Khoản Thu (*):" />
+                  <TextField fx:id="txtMaKhoanThu" prefHeight="40.0" promptText="VD: KT001" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="8.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Tên Khoản Thu (*):" />
+                  <TextField fx:id="txtTenKhoanThu" prefHeight="40.0" promptText="Nhập tên khoản thu" />
+               </children>
+            </VBox>
+            
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Loại Khoản Thu (*):" />
+                        <ComboBox fx:id="cmbLoaiKhoanThu" prefHeight="40.0" prefWidth="250.0" promptText="-- Chọn Loại --" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Số Tiền (VNĐ):" />
+                        <TextField fx:id="txtSoTien" prefHeight="40.0" promptText="Để trống nếu là tự nguyện" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Hạn Nộp:" />
+                        <DatePicker fx:id="dtpHanNop" prefHeight="40.0" prefWidth="200.0" promptText="DD/MM/YYYY" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15.0">
+               <children>
+                  <Button fx:id="btnHuy" mnemonicParsing="false" onAction="#onHuyClick" prefHeight="40.0" prefWidth="100.0"
+                          text="Hủy Bỏ"
+                          style="-fx-background-color: #D0D7DE; -fx-text-fill: #24292F; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
+                  <Button fx:id="btnLuu" mnemonicParsing="false" onAction="#onLuuClick" prefHeight="40.0" prefWidth="120.0"
+                          text="Lưu Thông Tin"
+                          style="-fx-background-color: #0969DA; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

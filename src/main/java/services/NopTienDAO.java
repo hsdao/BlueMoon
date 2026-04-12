@@ -3,43 +3,47 @@ package services;
 import models.NopTien;
 import services.db.MysqlConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NopTienDAO {
 
-    // 1. Lấy toàn bộ danh sách nộp tiền
+    // Map ResultSet -> Object (tái sử dụng)
+    private NopTien mapResultSet(ResultSet rs) throws SQLException {
+        NopTien nt = new NopTien();
+
+        nt.setId(rs.getInt("id"));
+        nt.setKhoanThuId(rs.getInt("khoan_thu_id"));
+        nt.setHoKhauId(rs.getInt("ho_khau_id"));
+        nt.setSoTien(rs.getBigDecimal("so_tien"));
+        nt.setNguoiThu(rs.getString("nguoi_thu"));
+        nt.setGhiChu(rs.getString("ghi_chu"));
+
+        Date ngay = rs.getDate("ngay_nop");
+        if (ngay != null) {
+            nt.setNgayNop(ngay.toLocalDate());
+        }
+
+        return nt;
+    }
+
+    // 1. Lấy toàn bộ
     public List<NopTien> getAllNopTien() {
         List<NopTien> danhSach = new ArrayList<>();
-        String sql = "SELECT * FROM nop_tien";
+
+        String sql = "SELECT id, khoan_thu_id, ho_khau_id, so_tien, nguoi_thu, ghi_chu, ngay_nop FROM nop_tien";
 
         try (Connection conn = MysqlConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                NopTien nt = new NopTien();
-
-                nt.setId(rs.getInt("id"));
-                nt.setKhoanThuId(rs.getInt("khoan_thu_id"));
-                nt.setHoKhauId(rs.getInt("ho_khau_id"));
-                nt.setSoTien(rs.getBigDecimal("so_tien"));
-                nt.setNguoiThu(rs.getString("nguoi_thu"));
-                nt.setGhiChu(rs.getString("ghi_chu"));
-
-                if (rs.getDate("ngay_nop") != null) {
-                    nt.setNgayNop(rs.getDate("ngay_nop").toLocalDate());
-                }
-
-                danhSach.add(nt);
+                danhSach.add(mapResultSet(rs));
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi lấy danh sách nộp tiền", e);
         }
 
         return danhSach;
@@ -62,16 +66,15 @@ public class NopTienDAO {
             pstmt.setString(5, nt.getGhiChu());
 
             if (nt.getNgayNop() != null) {
-                pstmt.setDate(6, java.sql.Date.valueOf(nt.getNgayNop()));
+                pstmt.setDate(6, Date.valueOf(nt.getNgayNop()));
             } else {
                 pstmt.setNull(6, Types.DATE);
             }
 
             return pstmt.executeUpdate() > 0;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi thêm nộp tiền", e);
         }
     }
 
@@ -92,7 +95,7 @@ public class NopTienDAO {
             pstmt.setString(5, nt.getGhiChu());
 
             if (nt.getNgayNop() != null) {
-                pstmt.setDate(6, java.sql.Date.valueOf(nt.getNgayNop()));
+                pstmt.setDate(6, Date.valueOf(nt.getNgayNop()));
             } else {
                 pstmt.setNull(6, Types.DATE);
             }
@@ -101,9 +104,8 @@ public class NopTienDAO {
 
             return pstmt.executeUpdate() > 0;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi cập nhật nộp tiền", e);
         }
     }
 
@@ -117,15 +119,14 @@ public class NopTienDAO {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi xóa nộp tiền", e);
         }
     }
 
-    // 5. Lấy theo ID (bonus thêm cho đầy đủ)
+    // 5. Lấy theo ID
     public NopTien getNopTienById(int id) {
-        String sql = "SELECT * FROM nop_tien WHERE id = ?";
+        String sql = "SELECT id, khoan_thu_id, ho_khau_id, so_tien, nguoi_thu, ghi_chu, ngay_nop FROM nop_tien WHERE id = ?";
 
         try (Connection conn = MysqlConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -134,24 +135,11 @@ public class NopTienDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                NopTien nt = new NopTien();
-
-                nt.setId(rs.getInt("id"));
-                nt.setKhoanThuId(rs.getInt("khoan_thu_id"));
-                nt.setHoKhauId(rs.getInt("ho_khau_id"));
-                nt.setSoTien(rs.getBigDecimal("so_tien"));
-                nt.setNguoiThu(rs.getString("nguoi_thu"));
-                nt.setGhiChu(rs.getString("ghi_chu"));
-
-                if (rs.getDate("ngay_nop") != null) {
-                    nt.setNgayNop(rs.getDate("ngay_nop").toLocalDate());
-                }
-
-                return nt;
+                return mapResultSet(rs);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi lấy nộp tiền theo ID", e);
         }
 
         return null;

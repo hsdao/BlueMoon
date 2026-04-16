@@ -22,7 +22,7 @@ public class HoKhau {
     public String getMaHo() { return maHo; }
     public void setMaHo(String maHo) { this.maHo = maHo; }
 
-    public Integer getChuHoId() { return chuHoId; }
+    public Integer getChuHoId()  { return chuHoId; }
     public void setChuHoId(Integer chuHoId) { this.chuHoId = chuHoId; }
 
     public String getSoDienThoaiChuHo() { return soDienThoaiChuHo; }

@@ -146,7 +146,7 @@ public class HoKhauController implements Initializable {
         List<HoKhau> dbList = dao.getAllHoKhau();
         hoKhauList = FXCollections.observableArrayList(dbList);
         tableHoKhau.setItems(hoKhauList);
-        setupSearch();
+        // Không gọi setupSearch() ở đây – listener chỉ cần đăng ký 1 lần trong initialize()
     }
 
     // Form thêm hộ khẩu

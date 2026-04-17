@@ -11,6 +11,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.KhoanThu;
+import services.KhoanThuDAO;
 import services.KhoanThuService;
 
 import java.net.URL;
@@ -19,38 +20,39 @@ import java.util.ResourceBundle;
 
 public class FormKhoanThuController implements Initializable {
 
-    @FXML
-    private TextField txtMaKhoanThu;
-    @FXML
-    private TextField txtTenKhoanThu;
-    @FXML
-    private ComboBox<String> cmbLoaiKhoanThu;
-    @FXML
-    private TextField txtSoTien;
-    @FXML
-    private DatePicker dtpHanNop;
-    @FXML
-    private Button btnLuu;
-    @FXML
-    private Button btnHuy;
+    @FXML private TextField txtMaKhoanThu;
+    @FXML private TextField txtTenKhoanThu;
+    @FXML private ComboBox<String> cmbLoaiKhoanThu;
+    @FXML private TextField txtSoTien;
+    @FXML private DatePicker dtpHanNop;
+    @FXML private Button btnLuu;
+    @FXML private Button btnHuy;
 
     private KhoanThuService khoanThuService;
+    private KhoanThuDAO khoanThuDAO;
     private KhoanThu editingKhoanThu;
+    private KhoanThuController parentController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         khoanThuService = new KhoanThuService();
+        khoanThuDAO = new KhoanThuDAO();
         cmbLoaiKhoanThu.setItems(FXCollections.observableArrayList("Bắt buộc", "Tự nguyện"));
+    }
+
+    // Được gọi bởi KhoanThuController để reload bảng sau khi lưu
+    public void setParentController(KhoanThuController parentController) {
+        this.parentController = parentController;
     }
 
     public void setKhoanThuData(KhoanThu khoanThuToEdit) {
         this.editingKhoanThu = khoanThuToEdit;
         if (khoanThuToEdit != null) {
             txtMaKhoanThu.setText(khoanThuToEdit.getMaKhoan());
-            txtMaKhoanThu.setDisable(true); // Không cho sửa mã vì là Primary/Unique key mock
+            txtMaKhoanThu.setDisable(true); // Không cho sửa mã vì là Primary/Unique key
             txtTenKhoanThu.setText(khoanThuToEdit.getTenKhoan());
             cmbLoaiKhoanThu.setValue(khoanThuToEdit.getLoai());
-            
+
             if (khoanThuToEdit.getSoTien() != null) {
                 txtSoTien.setText(String.valueOf(khoanThuToEdit.getSoTien()));
             }
@@ -62,9 +64,9 @@ public class FormKhoanThuController implements Initializable {
 
     @FXML
     public void onLuuClick(ActionEvent event) {
-        String maKhoan = txtMaKhoanThu.getText();
+        String maKhoan  = txtMaKhoanThu.getText();
         String tenKhoan = txtTenKhoanThu.getText();
-        String loai = cmbLoaiKhoanThu.getValue();
+        String loai     = cmbLoaiKhoanThu.getValue();
         String soTienStr = txtSoTien.getText();
 
         String errorMessage = khoanThuService.validateKhoanThu(maKhoan, tenKhoan, loai, soTienStr);
@@ -73,25 +75,43 @@ public class FormKhoanThuController implements Initializable {
             return;
         }
 
-        // Logic giả lập lưu xuống DB
         if (editingKhoanThu != null) {
+            // --- Chế độ SỬA ---
             editingKhoanThu.setTenKhoan(tenKhoan);
             editingKhoanThu.setLoai(loai);
-            if (!soTienStr.isEmpty()) {
-                editingKhoanThu.setSoTien(Double.parseDouble(soTienStr));
-            } else {
-                editingKhoanThu.setSoTien(null);
-            }
+            editingKhoanThu.setSoTien(soTienStr.isEmpty() ? null : Double.parseDouble(soTienStr));
             if (dtpHanNop.getValue() != null) {
                 editingKhoanThu.setHanNop(Date.valueOf(dtpHanNop.getValue()));
             }
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Cập nhật khoản thu thành công!");
-        } else {
-            // Khi làm thật sẽ gọi DAO Insert mới
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã tạo khoản thu " + tenKhoan + " thành công!");
-        }
 
-        closeWindow();
+            if (khoanThuDAO.capNhatKhoanThu(editingKhoanThu)) {
+                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Cập nhật khoản thu thành công!");
+                if (parentController != null) parentController.loadDataFromDB();
+                closeWindow();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Lỗi Database", "Không thể cập nhật. Tên khoản thu có thể đã tồn tại.");
+            }
+
+        } else {
+            // --- Chế độ THÊM MỚI ---
+            KhoanThu kt = new KhoanThu();
+            kt.setMaKhoan(maKhoan);
+            kt.setTenKhoan(tenKhoan);
+            kt.setLoai(loai);
+            kt.setSoTien(soTienStr.isEmpty() ? null : Double.parseDouble(soTienStr));
+            if (dtpHanNop.getValue() != null) {
+                kt.setHanNop(Date.valueOf(dtpHanNop.getValue()));
+            }
+            kt.setTrangThai("OPEN");
+
+            if (khoanThuDAO.themKhoanThu(kt)) {
+                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã tạo khoản thu \"" + tenKhoan + "\" thành công!");
+                if (parentController != null) parentController.loadDataFromDB();
+                closeWindow();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Lỗi Database", "Không thể tạo. Mã hoặc tên khoản thu đã tồn tại.");
+            }
+        }
     }
 
     @FXML

@@ -108,10 +108,13 @@ public class HoKhauFormController implements Initializable {
                 showAlert("Lỗi Database", "Không thể thêm mới. Mã hộ hoặc SĐT đã tồn tại!");
             }
         } else {
-            dao.capNhatHoKhau(hk);
-
-            parentController.loadDataFromDB();
-            closeWindow();
+            boolean success = dao.capNhatHoKhau(hk);
+            if (success) {
+                parentController.loadDataFromDB();
+                closeWindow();
+            } else {
+                showAlert("Lỗi Database", "Không thể cập nhật. Dữ liệu có thể bị trùng (Mã hộ, SĐT). Vui lòng kiểm tra lại.");
+            }
         }
     }
 

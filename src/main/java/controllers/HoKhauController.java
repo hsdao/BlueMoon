@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 
-public class HoKhauController implements Initializable {
+public class    HoKhauController implements Initializable {
 
     @FXML private TableView<HoKhau> tableHoKhau;
     @FXML private TableColumn<HoKhau, String> colMaHo;
@@ -41,7 +41,8 @@ public class HoKhauController implements Initializable {
     @FXML private TableColumn<HoKhau, String> colGhiChu;
     @FXML private TextField searchField;
 
-    private ObservableList<HoKhau> hoKhauList;
+    private final ObservableList<HoKhau> hoKhauList = FXCollections.observableArrayList();
+    private FilteredList<HoKhau> filteredList;
     private final HoKhauDAO dao = new HoKhauDAO();
 
     // Khởi tạo controller
@@ -63,90 +64,64 @@ public class HoKhauController implements Initializable {
         colTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
         colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
 
-        colNgayTao.setCellFactory(column -> new TableCell<HoKhau, Timestamp>() {
-            private final SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        colNgayTao.setCellFactory(column -> new TableCell<>() {
+            private final SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
             @Override
             protected void updateItem(Timestamp item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(format.format(item));
-                }
+                setText(empty || item == null ? null : fmt.format(item));
             }
         });
 
-        Callback<TableColumn<HoKhau, Void>, TableCell<HoKhau, Void>> cellFactory = new Callback<>() {
-            @Override
-            public TableCell<HoKhau, Void> call(final TableColumn<HoKhau, Void> param) {
-                return new TableCell<>() {
+        Callback<TableColumn<HoKhau, Void>, TableCell<HoKhau, Void>> factory = param ->
+                new TableCell<>() {
                     private final Button btnEdit = new Button("Sửa");
                     private final Button btnDelete = new Button("Xóa");
                     private final HBox pane = new HBox(10, btnEdit, btnDelete);
-
                     {
                         pane.setAlignment(Pos.CENTER);
-                        btnEdit.setStyle("-fx-background-color: #0969DA; -fx-text-fill: white; -fx-background-radius: 4; -fx-cursor: hand;");
-                        btnDelete.setStyle("-fx-background-color: #82071E; -fx-text-fill: white; -fx-background-radius: 4; -fx-cursor: hand;");
+                        btnEdit.setStyle("-fx-background-color: #0969DA; -fx-text-fill: white;"
+                                + " -fx-background-radius: 4; -fx-cursor: hand;");
+                        btnDelete.setStyle("-fx-background-color: #82071E; -fx-text-fill: white;"
+                                + " -fx-background-radius: 4; -fx-cursor: hand;");
 
-                        btnEdit.setOnAction(event -> {
-                            HoKhau data = getTableView().getItems().get(getIndex());
-                            openFormDialog(data);
-                        });
-
-                        btnDelete.setOnAction(event -> {
-                            HoKhau data = getTableView().getItems().get(getIndex());
-                            handleDelete(data);
-                        });
+                        btnEdit.setOnAction(e -> openFormDialog(
+                                getTableView().getItems().get(getIndex())));
+                        btnDelete.setOnAction(e -> handleDelete(
+                                getTableView().getItems().get(getIndex())));
                     }
-
                     @Override
                     protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
                         setGraphic(empty ? null : pane);
-                    }
-                };
             }
         };
-        colHanhDong.setCellFactory(cellFactory);
+        colHanhDong.setCellFactory(factory);
     }
 
     private void setupSearch() {
-        FilteredList<HoKhau> filteredData = new FilteredList<>(hoKhauList, p -> true);
+        filteredList = new FilteredList<>(hoKhauList, p -> true);
 
-        searchField.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            filteredData.setPredicate(hoKhau -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
+        searchField.textProperty().addListener(
+                (ObservableValue<? extends String> obs, String oldVal, String newVal) -> {
+                    filteredList.setPredicate(hk -> {
+                        if (newVal == null || newVal.isEmpty()) return true;
+                        String kw = newVal.toLowerCase();
+                        if (hk.getMaHo() != null && hk.getMaHo().toLowerCase().contains(kw)) return true;
+                        if (hk.getDiaChi() != null && hk.getDiaChi().toLowerCase().contains(kw)) return true;
+                        if (hk.getSoDienThoaiChuHo() != null && hk.getSoDienThoaiChuHo().contains(kw)) return true;
+                        return false;
+                    });
+                });
 
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (hoKhau.getMaHo() != null && hoKhau.getMaHo().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-
-                if (hoKhau.getDiaChi() != null && hoKhau.getDiaChi().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-
-                if (hoKhau.getSoDienThoaiChuHo() != null && hoKhau.getSoDienThoaiChuHo().contains(lowerCaseFilter)) {
-                    return true;
-                }
-
-                return false;
-            });
-        });
-
-        tableHoKhau.setItems(filteredData);
+        tableHoKhau.setItems(filteredList);
     }
 
     // Tải danh sách hộ khẩu từ DB vào bảng
     public void loadDataFromDB() {
         List<HoKhau> dbList = dao.getAllHoKhau();
-        hoKhauList = FXCollections.observableArrayList(dbList);
-        tableHoKhau.setItems(hoKhauList);
-        // Không gọi setupSearch() ở đây – listener chỉ cần đăng ký 1 lần trong initialize()
+        hoKhauList.setAll(dbList);
+        // KHÔNG gọi setupSearch() ở đây
     }
 
     // Form thêm hộ khẩu
@@ -157,17 +132,17 @@ public class HoKhauController implements Initializable {
 
     private void openFormDialog(HoKhau hoKhau) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/HoKhauForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/HoKhauForm.fxml"));
             Parent root = loader.load();
 
-            HoKhauFormController controller = loader.getController();
-            controller.setParentController(this);
+            HoKhauFormController fc = loader.getController();
+            fc.setParentController(this);
 
-            if (hoKhau != null) {
-                controller.setEditData(hoKhau);
-            } else {
-                controller.setAddMode();
-            }
+            if (hoKhau != null)
+                fc.setEditData(hoKhau);
+            else
+                fc.setAddMode();
 
             Stage stage = new Stage();
             stage.setTitle(hoKhau == null ? "Thêm mới Hộ Khẩu" : "Sửa Hộ Khẩu");
@@ -175,6 +150,7 @@ public class HoKhauController implements Initializable {
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.showAndWait();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -185,7 +161,9 @@ public class HoKhauController implements Initializable {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Xác nhận xóa");
         confirm.setHeaderText(null);
-        confirm.setContentText("Bạn có chắc chắn muốn xóa Hộ khẩu: " + hk.getMaHo() + " không?\nHành động này không thể hoàn tác.");
+        confirm.setContentText(
+                "Bạn có chắc chắn muốn xóa Hộ khẩu: " + hk.getMaHo()
+                        + " không?\nHành động này không thể hoàn tác.");
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {

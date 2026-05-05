@@ -2,11 +2,15 @@ package controllers;
 
 import application.UserSession;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import models.User;
 import services.UserDAO;
 
@@ -52,13 +56,23 @@ public class LoginController {
                 return;
             }
 
-            // Đăng nhập thành công -> Lưu vào Session(trong file UserSession.java)
+            // Đăng nhập thành công -> Lưu vào Session
             UserSession.getInstance().setCurrentUser(loggedInUser);
 
-            lblError.setText("Đăng nhập thành công!");
-            lblError.setStyle("-fx-text-fill: green;");
-
-            // TODO: Bàn giao lại cho nhóm để viết code chuyển sang màn hình Main/Dashboard
+            // Chuyển sang màn hình chính
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/HoKhau.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) btnLogin.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setWidth(1440);
+                stage.setHeight(860);
+                stage.centerOnScreen();
+            } catch (Exception e) {
+                lblError.setText("Lỗi hệ thống: Không thể tải màn hình chính!");
+                lblError.setStyle("-fx-text-fill: red;");
+                e.printStackTrace();
+            }
 
         } else {
             lblError.setText("Sai tài khoản hoặc mật khẩu!");

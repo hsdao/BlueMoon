@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
 import models.User;
 import services.UserDAO;
 
@@ -70,8 +71,8 @@ public class ChangePasswordController {
     }
 
     private void handleCancel() {
-        // TODO: Bàn giao lại cho nhóm để viết code đóng cửa sổ này
-        System.out.println("Đã bấm Hủy đổi mật khẩu.");
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        stage.close();
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

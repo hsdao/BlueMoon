@@ -10,7 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.StringConverter;
 import models.KhoanThu;
 import models.ThongKeModel;
-import services.ThongKeService;
+import services.ThongKeServiceDAO;
 import services.ExportPDFService;
 
 import java.io.File;
@@ -39,12 +39,12 @@ public class ThongKeController implements Initializable {
     @FXML private TableColumn<ThongKeModel, String> colTrangThai;
     @FXML private TableColumn<ThongKeModel, String> colGhiChu;
 
-    private ThongKeService thongKeService;
+    private ThongKeServiceDAO thongKeServiceDAO;
     private final NumberFormat currencyFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        thongKeService = new ThongKeService();
+        thongKeServiceDAO = new ThongKeServiceDAO();
         setupTableColumns();
         setupComboBox();
     }
@@ -61,7 +61,7 @@ public class ThongKeController implements Initializable {
 
     private void setupComboBox() {
         // Lấy dữ liệu khoản thu từ DB
-        List<KhoanThu> danhSachKhoanThu = thongKeService.getAllKhoanThu();
+        List<KhoanThu> danhSachKhoanThu = thongKeServiceDAO.getAllKhoanThu();
         cmbKhoanThu.setItems(FXCollections.observableArrayList(danhSachKhoanThu));
 
         // Format ComboBox để chỉ hiển thị tên khoản thu
@@ -84,7 +84,7 @@ public class ThongKeController implements Initializable {
         KhoanThu selectedKhoanThu = cmbKhoanThu.getValue();
         if (selectedKhoanThu != null) {
             // Lấy dữ liệu thống kê từ Service
-            List<ThongKeModel> data = thongKeService.getThongKeByKhoanThu(selectedKhoanThu.getId());
+            List<ThongKeModel> data = thongKeServiceDAO.getThongKeByKhoanThu(selectedKhoanThu.getId());
             ObservableList<ThongKeModel> observableData = FXCollections.observableArrayList(data);
 
             // Đổ dữ liệu vào bảng

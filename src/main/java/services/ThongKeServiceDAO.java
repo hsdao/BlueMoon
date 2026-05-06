@@ -11,7 +11,7 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class ThongKeService {
+public class ThongKeServiceDAO {
 
     // 1. Lấy danh sách các khoản thu để nạp vào ComboBox
     public List<KhoanThu> getAllKhoanThu() {

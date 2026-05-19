@@ -1,0 +1,208 @@
+package controllers;
+
+import models.HoKhau;
+import models.KhoanThu;
+import models.NopTien;
+import services.HoKhauDAO;
+import services.KhoanThuDAO;
+import services.NopTienDAO;
+import services.ThuPhiDAO;
+import services.ThuPhiService;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.math.BigDecimal;
+import java.net.URL;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+/**
+ * Controller cho màn hình Thu phí (ThuPhi.fxml).
+ * FIX: Ngày hiển thị đúng định dạng dd/MM/yyyy; số tiền format tiền tệ.
+ */
+public class ThuPhiController implements Initializable {
+
+    @FXML private ComboBox<KhoanThu> cmbKhoanThu;
+    @FXML private ComboBox<HoKhau>   cmbHoKhau;
+    @FXML private TextField           txtSoTien;
+    @FXML private DatePicker          dpNgayNop;
+    @FXML private TextField           txtNguoiThu;
+    @FXML private TextArea            txtGhiChu;
+    @FXML private Button              btnGhiNhan;
+    @FXML private Button              btnLamMoi;
+
+    @FXML private TableView<NopTien>             tblLichSu;
+    @FXML private TableColumn<NopTien, Integer>  colId;
+    @FXML private TableColumn<NopTien, String>   colHoKhauId;   // Hiển thị mã hộ
+    @FXML private TableColumn<NopTien, String>   colSoTien;     // Hiển thị format tiền
+    @FXML private TableColumn<NopTien, String>   colNguoiThu;
+    @FXML private TableColumn<NopTien, String>   colGhiChu;
+    @FXML private TableColumn<NopTien, String>   colNgayNop;    // Hiển thị dd/MM/yyyy
+
+    private final KhoanThuDAO  khoanThuDAO = new KhoanThuDAO();
+    private final HoKhauDAO    hoKhauDAO   = new HoKhauDAO();
+    private final ThuPhiDAO    thuPhiDAO   = new ThuPhiDAO();
+    private final ThuPhiService service    = new ThuPhiService();
+
+    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final NumberFormat currencyFmt = NumberFormat.getInstance(new Locale("vi", "VN"));
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        setupColumns();
+        loadKhoanThu();
+        loadHoKhau();
+        dpNgayNop.setValue(LocalDate.now());
+        cmbKhoanThu.setOnAction(e -> { preFillSoTien(); loadLichSu(); });
+    }
+
+    // ---- Setup columns ----
+
+    private void setupColumns() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        // FIX: Hiển thị mã hộ khẩu thay vì raw ID
+        colHoKhauId.setCellFactory(col -> new TableCell<>() {
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) { setText(null); return; }
+                int hkId = getTableView().getItems().get(getIndex()).getHoKhauId();
+                // Tra từ ComboBox đang có
+                String maHo = cmbHoKhau.getItems().stream()
+                        .filter(hk -> hk != null && hk.getId() == hkId)
+                        .map(HoKhau::getMaHo)
+                        .findFirst().orElse("ID: " + hkId);
+                setText(maHo);
+            }
+        });
+
+        // FIX: Hiển thị số tiền định dạng tiền tệ VN
+        colSoTien.setCellFactory(col -> new TableCell<>() {
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) { setText(null); return; }
+                BigDecimal soTien = getTableView().getItems().get(getIndex()).getSoTien();
+                setText(soTien != null ? currencyFmt.format(soTien) + " đ" : "—");
+            }
+        });
+
+        colNguoiThu.setCellValueFactory(new PropertyValueFactory<>("nguoiThu"));
+        colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+
+        // FIX: Hiển thị ngày dạng dd/MM/yyyy
+        colNgayNop.setCellFactory(col -> new TableCell<>() {
+            @Override protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) { setText(null); return; }
+                LocalDate d = getTableView().getItems().get(getIndex()).getNgayNop();
+                setText(d != null ? d.format(DATE_FMT) : "—");
+            }
+        });
+    }
+
+    private void loadKhoanThu() {
+        ObservableList<KhoanThu> obs = FXCollections.observableArrayList(khoanThuDAO.getAllKhoanThu());
+        cmbKhoanThu.setItems(obs);
+        cmbKhoanThu.setCellFactory(lv -> cellKT());
+        cmbKhoanThu.setButtonCell(cellKT());
+    }
+
+    private ListCell<KhoanThu> cellKT() {
+        return new ListCell<>() {
+            @Override protected void updateItem(KhoanThu kt, boolean empty) {
+                super.updateItem(kt, empty);
+                setText(empty || kt == null ? null : kt.getMaKhoan() + " – " + kt.getTenKhoan());
+            }
+        };
+    }
+
+    private void loadHoKhau() {
+        ObservableList<HoKhau> obs = FXCollections.observableArrayList(hoKhauDAO.getAllHoKhau());
+        cmbHoKhau.setItems(obs);
+        cmbHoKhau.setCellFactory(lv -> cellHK());
+        cmbHoKhau.setButtonCell(cellHK());
+    }
+
+    private ListCell<HoKhau> cellHK() {
+        return new ListCell<>() {
+            @Override protected void updateItem(HoKhau hk, boolean empty) {
+                super.updateItem(hk, empty);
+                setText(empty || hk == null ? null : hk.getMaHo() + " – " + hk.getDiaChi());
+            }
+        };
+    }
+
+    private void preFillSoTien() {
+        KhoanThu kt = cmbKhoanThu.getValue();
+        if (kt != null && kt.getSoTien() != null)
+            txtSoTien.setText(String.valueOf(kt.getSoTien().longValue()));
+        else txtSoTien.clear();
+    }
+
+    private void loadLichSu() {
+        KhoanThu kt = cmbKhoanThu.getValue();
+        if (kt == null) { tblLichSu.getItems().clear(); return; }
+        tblLichSu.setItems(FXCollections.observableArrayList(thuPhiDAO.getByKhoanThu(kt.getId())));
+    }
+
+    // ---- Sự kiện ----
+
+    @FXML
+    private void onGhiNhanClick() {
+        KhoanThu kt = cmbKhoanThu.getValue();
+        HoKhau   hk = cmbHoKhau.getValue();
+        int ktId = kt != null ? kt.getId() : 0;
+        int hkId = hk != null ? hk.getId() : 0;
+
+        String loi = service.validate(ktId, hkId, txtSoTien.getText(),
+                                      txtNguoiThu.getText(), dpNgayNop.getValue());
+        if (loi != null) { showAlert(Alert.AlertType.WARNING, "Dữ liệu không hợp lệ", loi); return; }
+
+        if (service.kiemTraDaNop(ktId, hkId)) {
+            Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+            c.setTitle("Cảnh báo trùng nộp");
+            c.setHeaderText(null);
+            c.setContentText("Hộ này đã nộp khoản \"" + kt.getTenKhoan() + "\" rồi.\nVẫn ghi nhận tiếp?");
+            if (c.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
+        }
+
+        NopTien nt = new NopTien();
+        nt.setKhoanThuId(ktId);
+        nt.setHoKhauId(hkId);
+        nt.setSoTien(new BigDecimal(txtSoTien.getText().trim().replace(",", "")));
+        nt.setNgayNop(dpNgayNop.getValue());
+        nt.setNguoiThu(txtNguoiThu.getText().trim());
+        nt.setGhiChu(txtGhiChu.getText().trim());
+
+        if (service.ghiNhanNopTien(nt)) {
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã ghi nhận nộp tiền thành công!");
+            resetForm();
+            loadLichSu();
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể ghi nhận. Vui lòng thử lại.");
+        }
+    }
+
+    @FXML
+    private void onLamMoiClick() { resetForm(); tblLichSu.getItems().clear(); }
+
+    private void resetForm() {
+        cmbKhoanThu.setValue(null); cmbHoKhau.setValue(null);
+        txtSoTien.clear(); dpNgayNop.setValue(LocalDate.now());
+        txtNguoiThu.clear(); txtGhiChu.clear();
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert a = new Alert(type);
+        a.setTitle(title); a.setHeaderText(null); a.setContentText(content);
+        a.showAndWait();
+    }
+}

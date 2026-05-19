@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox style="-fx-background-color: #F6F8FA;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.LichSuBienDongController">
+    <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0" /></padding>
+    <children>
+
+        <!-- Tiêu đề -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <VBox.margin><Insets bottom="20.0" /></VBox.margin>
+            <children>
+                <Label text="Biến Động Nhân Khẩu"
+                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #24292F;" />
+            </children>
+        </HBox>
+
+        <!-- 2-panel body -->
+        <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+            <children>
+
+                <!-- LEFT: Record Change -->
+                <VBox prefWidth="370.0" spacing="14.0"
+                      style="-fx-background-color: white; -fx-border-color: #D0D7DE;
+                             -fx-border-radius: 8; -fx-background-radius: 8;">
+                    <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
+                    <children>
+
+                        <Label text="Bản Ghi Biến Động Mới"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #24292F;" />
+
+                        <!-- Select Person -->
+                        <VBox spacing="6.0">
+                            <children>
+                                <Label text="Đối tượng thay đổi" style="-fx-text-fill: #57606A;" />
+                                <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                    <children>
+                                        <TextField fx:id="txtSearchNhanKhau"
+                                                   HBox.hgrow="ALWAYS" prefHeight="38.0"
+                                                   promptText="Gõ tên, ID, CCCD hoặc SĐT..."
+                                                   style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
+                                        <Button fx:id="btnClearPerson" text="✕"
+                                                prefHeight="38.0" prefWidth="38.0"
+                                                onAction="#handleClearPerson"
+                                                visible="false" managed="false"
+                                                style="-fx-background-color: #D0D7DE; -fx-font-weight: bold;
+                                                       -fx-background-radius: 4; -fx-cursor: hand;" />
+                                    </children>
+                                </HBox>
+                                <ListView fx:id="lvSuggestions"
+                                          prefWidth="322.0" prefHeight="130.0"
+                                          visible="false" managed="false"
+                                          style="-fx-border-color: #0969DA; -fx-border-radius: 4;" />
+                                <VBox fx:id="paneNhanKhauInfo"
+                                      visible="false" managed="false" spacing="4.0"
+                                      style="-fx-background-color: #F0F7FF; -fx-border-color: #0969DA;
+                                             -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 10;">
+                                    <children>
+                                        <Label fx:id="lblNKTen"
+                                               style="-fx-font-weight: bold; -fx-font-size: 13px;" />
+                                        <Label fx:id="lblNKNgaySinh" style="-fx-text-fill: #57606A;" />
+                                        <Label fx:id="lblNKGioiTinh" style="-fx-text-fill: #57606A;" />
+                                        <Label fx:id="lblNKCccd"     style="-fx-text-fill: #57606A;" />
+                                        <Label fx:id="lblNKHoKhau"   style="-fx-text-fill: #57606A;" />
+                                        <Label fx:id="lblNKTrangThai"
+                                               style="-fx-text-fill: #0969DA; -fx-font-weight: bold;" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Change Type -->
+                        <VBox spacing="6.0">
+                            <children>
+                                <Label text="Kiểu biến động" style="-fx-text-fill: #57606A;" />
+                                <ComboBox fx:id="cmbLoaiBienDong"
+                                          prefWidth="322.0" prefHeight="38.0" promptText="-- Chọn --" />
+                            </children>
+                        </VBox>
+
+                        <!-- Execution Date -->
+                        <VBox spacing="6.0">
+                            <children>
+                                <Label text="Thời điểm biến động" style="-fx-text-fill: #57606A;" />
+                                <DatePicker fx:id="dtpNgayBienDong" prefWidth="322.0" prefHeight="38.0" />
+                            </children>
+                        </VBox>
+
+                        <!-- Notes -->
+                        <VBox spacing="6.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <Label text="Ghi chú" style="-fx-text-fill: #57606A;" />
+                                <TextArea fx:id="txaGhiChu" prefRowCount="4" wrapText="true"
+                                          prefWidth="322.0"
+                                          style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
+                            </children>
+                        </VBox>
+
+                        <!-- Save -->
+                        <Button fx:id="btnLuuBienDong" text="Luu thay doi"
+                                prefWidth="322.0" prefHeight="42.0"
+                                onAction="#handleSaveChange"
+                                style="-fx-background-color: #5B4B8A; -fx-text-fill: white;
+                                       -fx-font-weight: bold; -fx-font-size: 14px;
+                                       -fx-background-radius: 6; -fx-cursor: hand;" />
+
+                    </children>
+                </VBox>
+
+                <!-- RIGHT: History -->
+                <VBox HBox.hgrow="ALWAYS" spacing="12.0"
+                      style="-fx-background-color: white; -fx-border-color: #D0D7DE;
+                             -fx-border-radius: 8; -fx-background-radius: 8;">
+                    <padding><Insets bottom="24.0" left="24.0" right="24.0" top="24.0" /></padding>
+                    <children>
+
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                            <children>
+                                <Label text="Lịch Sử Biến Động"
+                                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #24292F;" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <TextField fx:id="txtTimKiem"
+                                           prefWidth="200.0" prefHeight="34.0"
+                                           promptText="Tìm kiếm..."
+                                           style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
+                                <Button fx:id="btnXoaLog" text="Xóa"
+                                        prefHeight="34.0"
+                                        onAction="#handleDeleteLog"
+                                        style="-fx-background-color: #82071E; -fx-text-fill: white;
+                                               -fx-font-weight: bold; -fx-background-radius: 4; -fx-cursor: hand;" />
+                            </children>
+                        </HBox>
+
+                        <TableView fx:id="tblLichSu" VBox.vgrow="ALWAYS">
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                            <columns>
+                                <TableColumn fx:id="colId"        text="ID" />
+                                <TableColumn fx:id="colNgay"      text="Thời gian thay đổi" />
+                                <TableColumn fx:id="colNhanKhau"  text="Họ tên" />
+                                <TableColumn fx:id="colLoai"      text="Hành động" />
+                                <TableColumn fx:id="colNguoiThuc" text="Sửa bởi" />
+                                <TableColumn fx:id="colGhiChu"    text="Ghi chú" />
+                            </columns>
+                        </TableView>
+
+                    </children>
+                </VBox>
+
+            </children>
+        </HBox>
+
+    </children>
+</VBox>

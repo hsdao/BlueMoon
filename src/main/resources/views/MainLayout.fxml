@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="1024.0" prefWidth="1440.0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.MainLayoutController">
+    <children>
+
+        <!-- ===== SIDEBAR 250px ===== -->
+        <VBox prefWidth="250.0" prefHeight="1024.0"
+              style="-fx-background-color: #1E3A5F;">
+
+            <!-- Branding -->
+            <VBox alignment="CENTER" prefHeight="78.0"
+                  style="-fx-border-color: transparent transparent #2D5A8E transparent; -fx-border-width: 0 0 1 0;">
+                <padding><Insets top="14.0" right="16.0" bottom="14.0" left="16.0"/></padding>
+                <children>
+                    <Label text="BLUEMOON"
+                           style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+                    <Label text="Quản lý thu phí chung cư"
+                           style="-fx-text-fill: #8EA8C3; -fx-font-size: 10px;"
+                           wrapText="true" alignment="CENTER"/>
+                </children>
+            </VBox>
+
+            <!-- Nav items -->
+            <VBox spacing="1.0" VBox.vgrow="ALWAYS">
+                <padding><Insets top="10.0" left="8.0" right="8.0" bottom="10.0"/></padding>
+                <children>
+                    <Label text="QUẢN LÝ"
+                           style="-fx-text-fill: #8EA8C3; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 4 8 2 8;"/>
+                    <Button text="Tong quan" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goDashboard" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Ho Khau" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goHoKhau" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Nhan Khau" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goNhanKhau" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+
+                    <Label text="THU PHI"
+                           style="-fx-text-fill: #8EA8C3; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 8 8 2 8;"/>
+                    <Button text="Khoan Thu" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goKhoanThu" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Thu Phi" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goThuPhi" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Lich Su Nop Phi" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goLichSuNopTien" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Thong Ke" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goThongKe" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+
+                    <Label text="CU TRU"
+                           style="-fx-text-fill: #8EA8C3; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 8 8 2 8;"/>
+                    <Button text="Tam Tru / Tam Vang" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goTamTru" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Bien Dong Nhan Khau" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goLichSuBienDong" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+
+                    <Button text="Tim Kiem" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goTimKiem" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+
+                    <!-- Admin-only -->
+                    <Label fx:id="lblAdminSection" text="QUAN TRI"
+                           style="-fx-text-fill: #8EA8C3; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 8 8 2 8;"/>
+                    <Button fx:id="btnQuanLyTK" text="Quan Ly Tai Khoan" prefWidth="234.0" prefHeight="40.0"
+                            onAction="#goQuanLyTaiKhoan" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                </children>
+            </VBox>
+
+            <!-- Bottom: settings + user + logout -->
+            <VBox style="-fx-border-color: #2D5A8E transparent transparent transparent; -fx-border-width: 1 0 0 0;">
+                <padding><Insets top="8.0" left="8.0" right="8.0" bottom="12.0"/></padding>
+                <children>
+                    <Button text="Cai Dat" prefWidth="234.0" prefHeight="36.0"
+                            onAction="#goSettings" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 12px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <Button text="Doi Mat Khau" prefWidth="234.0" prefHeight="36.0"
+                            onAction="#goChangePassword" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: transparent; -fx-text-fill: #CBD5E1; -fx-font-size: 12px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                    <HBox spacing="6.0" alignment="CENTER_LEFT">
+                        <padding><Insets top="6.0" left="14.0" right="8.0" bottom="4.0"/></padding>
+                        <children>
+                            <VBox>
+                                <children>
+                                    <Label fx:id="lblUserName"
+                                           style="-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                                    <Label fx:id="lblUserRole"
+                                           style="-fx-text-fill: #8EA8C3; -fx-font-size: 10px;"/>
+                                </children>
+                            </VBox>
+                        </children>
+                    </HBox>
+                    <Button text="Dang Xuat" prefWidth="234.0" prefHeight="38.0"
+                            onAction="#handleLogout" mnemonicParsing="false" alignment="CENTER_LEFT"
+                            style="-fx-background-color: #82071E; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 0 0 0 14;"/>
+                </children>
+            </VBox>
+        </VBox>
+
+        <!-- ===== CONTENT AREA ===== -->
+        <StackPane fx:id="contentArea" HBox.hgrow="ALWAYS"
+                   style="-fx-background-color: #F6F8FA;"/>
+
+    </children>
+</HBox>

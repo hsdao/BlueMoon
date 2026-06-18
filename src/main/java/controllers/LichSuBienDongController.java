@@ -1,10 +1,15 @@
 package controllers;
 
 import application.UserSession;
+import models.HoKhau;
 import models.LichSuBienDong;
 import models.NhanKhau;
+import models.NhanKhauStatus;
+import models.QuanHe;
+import services.HoKhauDAO;
 import services.LichSuDAO;
 import services.NhanKhauDAO;
+import services.QuanHeDAO;
 
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -57,6 +62,8 @@ public class LichSuBienDongController implements Initializable {
     // ── State ────────────────────────────────────────────────────────────────
     private final LichSuDAO   lichSuDAO   = new LichSuDAO();
     private final NhanKhauDAO nhanKhauDAO = new NhanKhauDAO();
+    private final HoKhauDAO   hoKhauDAO   = new HoKhauDAO();
+    private final QuanHeDAO   quanHeDAO   = new QuanHeDAO();
 
     private List<NhanKhau>    allNhanKhau;
     private NhanKhau          selectedNK;          // null = chưa chọn
@@ -342,6 +349,9 @@ public class LichSuBienDongController implements Initializable {
 
         String ghiChu = txaGhiChu.getText() == null ? "" : txaGhiChu.getText().trim();
 
+        // Nếu khai tử/chuyển đi MỘT CHỦ HỘ -> bắt giao lại chủ hộ trước khi ghi
+        if (!ensureChuHoBeforeRemove(verified, loai)) return;
+
         // Insert
         LichSuBienDong log = new LichSuBienDong();
         log.setNhanKhauId(verified.getId());
@@ -353,12 +363,102 @@ public class LichSuBienDongController implements Initializable {
 
         boolean ok = lichSuDAO.insert(log);
         if (ok) {
+            applyBienDongSideEffects(loai, verified);
             loadDataFromDB();
             clearForm();
             showInfo("Thành công", "Đã ghi nhận biến động cho: " + verified.getHoTen());
         } else {
             showError("Lỗi Database", "Không thể lưu biến động. Vui lòng thử lại.");
         }
+    }
+
+    // ── Side effects ──────────────────────────────────────────────────────────
+
+    private void applyBienDongSideEffects(String loai, NhanKhau nk) {
+        switch (loai) {
+            case "Khai tử" -> {
+                nhanKhauDAO.updateTrangThai(nk.getId(), NhanKhauStatus.DECEASED);
+                if (nk.getHoKhauId() > 0) decreaseSoThanhVien(nk.getHoKhauId());
+            }
+            case "Chuyển đi" -> {
+                nhanKhauDAO.updateTrangThai(nk.getId(), NhanKhauStatus.MOVED_OUT);
+                if (nk.getHoKhauId() > 0) decreaseSoThanhVien(nk.getHoKhauId());
+            }
+            case "Nhập khẩu", "Khai sinh", "Nhập hộ" -> {
+                nhanKhauDAO.updateTrangThai(nk.getId(), NhanKhauStatus.PERMANENT);
+                if (nk.getHoKhauId() > 0) {
+                    HoKhau hk = hoKhauDAO.getAllHoKhau().stream()
+                        .filter(h -> h.getId() == nk.getHoKhauId()).findFirst().orElse(null);
+                    if (hk != null) hoKhauDAO.updateSoThanhVien(hk.getId(), hk.getSoThanhVien() + 1);
+                }
+            }
+            default -> { /* Tách hộ, Thay đổi thông tin — không thay đổi tự động */ }
+        }
+    }
+
+    private void decreaseSoThanhVien(int hoKhauId) {
+        HoKhau hk = hoKhauDAO.getAllHoKhau().stream()
+            .filter(h -> h.getId() == hoKhauId).findFirst().orElse(null);
+        if (hk != null) hoKhauDAO.updateSoThanhVien(hk.getId(), hk.getSoThanhVien() - 1);
+    }
+
+    /**
+     * Khi khai tử / chuyển đi MỘT CHỦ HỘ: bắt giao lại chủ hộ cho thành viên khác trong hộ.
+     * @return true nếu được phép tiếp tục; false nếu người dùng hủy (không ghi biến động).
+     */
+    private boolean ensureChuHoBeforeRemove(NhanKhau nk, String loai) {
+        if (!"Khai tử".equals(loai) && !"Chuyển đi".equals(loai)) return true;
+        if (nk.getHoKhauId() <= 0) return true;
+
+        HoKhau hk = hoKhauDAO.getAllHoKhau().stream()
+                .filter(h -> h.getId() == nk.getHoKhauId()).findFirst().orElse(null);
+        if (hk == null || hk.getChuHoId() == null || hk.getChuHoId() != nk.getId()) {
+            return true; // không phải chủ hộ -> không cần giao lại
+        }
+
+        // Thành viên còn ở hộ (loại người đã đi/mất và chính người này)
+        List<NhanKhau> conLai = nhanKhauDAO.findByHoKhau(hk.getId()).stream()
+                .filter(n -> n.getId() != nk.getId())
+                .filter(n -> n.getTrangThai() == null
+                        || !(n.getTrangThai().equals("MOVED") || n.getTrangThai().equals("MOVED_OUT")
+                             || n.getTrangThai().equals("DECEASED")))
+                .collect(Collectors.toList());
+
+        if (conLai.isEmpty()) {
+            hk.setChuHoId(null);
+            hoKhauDAO.capNhatHoKhau(hk);
+            showInfo("Chủ hộ", "Hộ " + hk.getMaHo() + " không còn thành viên — đã để trống chủ hộ.");
+            return true;
+        }
+
+        java.util.Map<String, NhanKhau> map = new java.util.LinkedHashMap<>();
+        for (NhanKhau n : conLai)
+            map.put(n.getHoTen() + (n.getCccd() != null ? " (" + n.getCccd() + ")" : ""), n);
+        java.util.List<String> opts = new java.util.ArrayList<>(map.keySet());
+
+        ChoiceDialog<String> dlg = new ChoiceDialog<>(opts.get(0), opts);
+        dlg.setTitle("Giao lại chủ hộ");
+        dlg.setHeaderText("\"" + nk.getHoTen() + "\" đang là CHỦ HỘ của " + hk.getMaHo() + ".");
+        dlg.setContentText("Chọn chủ hộ mới:");
+        java.util.Optional<String> res = dlg.showAndWait();
+        if (res.isEmpty()) {
+            showError("Đã hủy", "Phải giao lại chủ hộ trước khi " + loai.toLowerCase() + " chủ hộ.");
+            return false;
+        }
+
+        NhanKhau moi = map.get(res.get());
+        hk.setChuHoId(moi.getId());
+        if (moi.getSoDienThoai() != null) hk.setSoDienThoaiChuHo(moi.getSoDienThoai());
+        hoKhauDAO.capNhatHoKhau(hk);
+        moi.setQuanHeId(chuHoQuanHeId());
+        nhanKhauDAO.update(moi);
+        return true;
+    }
+
+    private int chuHoQuanHeId() {
+        for (QuanHe q : quanHeDAO.getAll())
+            if ("Chủ hộ".equalsIgnoreCase(q.getTenQuanHe())) return q.getId();
+        return 1;
     }
 
     // ── Delete Log ────────────────────────────────────────────────────────────

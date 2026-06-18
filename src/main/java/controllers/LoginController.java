@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.User;
+import services.NotificationService;
 import services.UserDAO;
 
 public class LoginController {
@@ -22,52 +23,52 @@ public class LoginController {
     @FXML private Button btnLogin;
     @FXML private Label lblError;
 
-    private UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     @FXML
     public void initialize() {
-        // Nạp dữ liệu vào ComboBox Role
         cmbRole.getItems().addAll("ADMIN", "STAFF");
-
-        // Bắt sự kiện click nút Login
         btnLogin.setOnAction(event -> handleLogin());
+        // Cho phép nhấn Enter trong ô mật khẩu để đăng nhập
+        txtPassword.setOnAction(event -> handleLogin());
     }
 
     private void handleLogin() {
-        String username = txtUsername.getText();
+        String username = txtUsername.getText().trim();
         String password = txtPassword.getText();
         String role = cmbRole.getValue();
 
-        // Validate form trống
         if (username.isEmpty() || password.isEmpty() || role == null) {
             lblError.setText("Vui lòng nhập đầy đủ thông tin và chọn Role!");
             lblError.setStyle("-fx-text-fill: red;");
             return;
         }
 
-        // Kiểm tra database
         User loggedInUser = userDAO.kiemTraDangNhap(username, password);
 
         if (loggedInUser != null) {
-            // Kiểm tra Role
             if (!loggedInUser.getRole().equals(role)) {
                 lblError.setText("Tài khoản không có quyền " + role + "!");
                 lblError.setStyle("-fx-text-fill: red;");
                 return;
             }
 
-            // Đăng nhập thành công -> Lưu vào Session
             UserSession.getInstance().setCurrentUser(loggedInUser);
 
-            // Chuyển sang màn hình chính
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/HoKhau.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainLayout.fxml"));
                 Parent root = loader.load();
                 Stage stage = (Stage) btnLogin.getScene().getWindow();
                 stage.setScene(new Scene(root));
-                stage.setWidth(1440);
-                stage.setHeight(860);
-                stage.centerOnScreen();
+                stage.setResizable(true);
+                stage.setMinWidth(1100);
+                stage.setMinHeight(700);
+                stage.setMaximized(true);   // khớp mọi kích thước màn hình
+
+                // FIX: Gọi NotificationService sau khi màn hình chính đã load
+                NotificationService notifService = new NotificationService();
+                notifService.checkAndNotify(stage);
+
             } catch (Exception e) {
                 lblError.setText("Lỗi hệ thống: Không thể tải màn hình chính!");
                 lblError.setStyle("-fx-text-fill: red;");

@@ -51,4 +51,7 @@ public class NhanKhau {
     public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }
     public String getTrangThai() { return trangThai; }
     public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+
+    /** Nhãn tiếng Việt của trạng thái (Thường trú / Tạm trú / Đã chuyển đi / Đã mất). */
+    public String getTrangThaiLabel() { return NhanKhauStatus.label(trangThai); }
 }

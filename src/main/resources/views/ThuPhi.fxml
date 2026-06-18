@@ -58,9 +58,15 @@
 
                      <Label text="Hộ khẩu *" GridPane.columnIndex="1" GridPane.rowIndex="0"
                             style="-fx-font-weight: bold; -fx-text-fill: #24292F;" />
-                     <ComboBox fx:id="cmbHoKhau" maxWidth="Infinity"
-                               prefHeight="38.0" promptText="— Chọn hộ khẩu —"
-                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <VBox spacing="4.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <children>
+                           <TextField fx:id="txtTimHoKhau" prefHeight="30.0"
+                                      promptText="Gõ số phòng / tên chủ hộ để lọc..."
+                                      style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
+                           <ComboBox fx:id="cmbHoKhau" maxWidth="Infinity"
+                                     prefHeight="38.0" promptText="— Chọn hộ khẩu —" />
+                        </children>
+                     </VBox>
 
                      <!-- Hàng 2: Số tiền | Ngày nộp -->
                      <Label text="Số tiền (VNĐ) *" GridPane.columnIndex="0" GridPane.rowIndex="2"
@@ -110,8 +116,22 @@
             </VBox>
 
             <!-- Lịch sử nộp theo khoản thu đang chọn -->
-            <Label text="Lịch sử nộp theo khoản thu đang chọn"
-                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1E3A5F;" />
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+               <children>
+                  <Label text="Lịch sử nộp theo khoản thu đang chọn"
+                         style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1E3A5F;" />
+                  <javafx.scene.layout.Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnInBienLai" mnemonicParsing="false" onAction="#onInBienLaiClick"
+                          text="In biên lai" prefHeight="34.0"
+                          style="-fx-background-color: #1F883D; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
+                  <Button fx:id="btnSuaNop" mnemonicParsing="false" onAction="#onSuaNopClick"
+                          text="Sửa dòng chọn" prefHeight="34.0"
+                          style="-fx-background-color: #0969DA; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
+                  <Button fx:id="btnXoaNop" mnemonicParsing="false" onAction="#onXoaNopClick"
+                          text="Xóa dòng chọn" prefHeight="34.0"
+                          style="-fx-background-color: #82071E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
+               </children>
+            </HBox>
 
             <TableView fx:id="tblLichSu" fixedCellSize="48.0" VBox.vgrow="ALWAYS">
                <columnResizePolicy>
@@ -120,7 +140,7 @@
                <columns>
                   <TableColumn fx:id="colId" text="ID" prefWidth="60.0"
                                style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="colHoKhauId" text="Hộ Khẩu ID"
+                  <TableColumn fx:id="colHoKhauId" text="Phòng / Chủ hộ"
                                style="-fx-alignment: CENTER;" />
                   <TableColumn fx:id="colSoTien" text="Số Tiền (VNĐ)"
                                style="-fx-alignment: CENTER_RIGHT;" />

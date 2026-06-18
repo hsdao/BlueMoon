@@ -1,0 +1,173 @@
+/* =====================================================================
+ * app.css — Hệ thống thiết kế dùng chung cho BlueMoon
+ * Phong cách: dashboard quản trị hiện đại (tham khảo GitHub Primer / Ant Design).
+ * Gắn ở root của MainLayout & Login nên cascade xuống mọi màn con.
+ * Bảng màu: primary #0969DA · success #1F883D · danger #CF222E · navy #1E3A5F
+ *           nền #F6F8FA · viền #D0D7DE · chữ #24292F / phụ #57606A
+ * ===================================================================== */
+
+/* ----- Typography toàn cục ----- */
+.root {
+    -fx-font-family: "Segoe UI", "Inter", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ===================== SIDEBAR ===================== */
+.sidebar { -fx-background-color: #1E3A5F; }
+
+.nav-section {
+    -fx-text-fill: #8EA8C3;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 8 2 8;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #CBD5E1;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+    -fx-padding: 0 0 0 14;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-color: transparent;
+}
+.nav-button:hover {
+    -fx-background-color: #2D5A8E;
+    -fx-text-fill: white;
+}
+/* Mục đang mở: nền đậm + thanh nhấn bên trái (kiểu sidebar hiện đại) */
+.nav-active {
+    -fx-background-color: #2D5A8E;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-color: transparent transparent transparent #58A6FF;
+}
+
+/* ===================== NÚT HÀNH ĐỘNG ===================== */
+.btn-primary {
+    -fx-background-color: #0969DA;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 8 16 8 16;
+}
+.btn-primary:hover   { -fx-background-color: #0860C4; }
+.btn-primary:pressed { -fx-background-color: #0550A0; }
+
+.btn-success {
+    -fx-background-color: #1F883D;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 8 16 8 16;
+}
+.btn-success:hover   { -fx-background-color: #1A7F37; }
+.btn-success:pressed { -fx-background-color: #166B2D; }
+
+.btn-danger {
+    -fx-background-color: #CF222E;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 8 16 8 16;
+}
+.btn-danger:hover   { -fx-background-color: #A40E26; }
+.btn-danger:pressed { -fx-background-color: #82071E; }
+
+.btn-secondary {
+    -fx-background-color: #F6F8FA;
+    -fx-text-fill: #24292F;
+    -fx-border-color: #D0D7DE;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 8 16 8 16;
+}
+.btn-secondary:hover { -fx-background-color: #EAEEF2; }
+
+/* ===================== THẺ & NỀN ===================== */
+.app-bg { -fx-background-color: #F6F8FA; }
+
+/* Thẻ nội dung: bo góc + viền nhạt + đổ bóng mềm (tạo chiều sâu) */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #E1E6EB;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(27,31,36,0.06), 12, 0, 0, 3);
+}
+
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #24292F;
+}
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E3A5F;
+}
+
+/* ===================== Ô NHẬP ===================== */
+.text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-radius: 6;
+}
+/* Viền xanh khi focus (rõ điểm nhập đang chọn) */
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: #0969DA;
+    -fx-border-width: 1.4;
+    -fx-border-radius: 6;
+}
+
+/* ===================== BẢNG (TableView) ===================== */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #E1E6EB;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 0;
+}
+.table-view .column-header-background {
+    -fx-background-color: #F0F3F6;
+    -fx-background-radius: 8 8 0 0;
+}
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #57606A;
+    -fx-font-weight: bold;
+}
+.table-row-cell {
+    -fx-border-color: transparent transparent #EBEEF1 transparent;
+    -fx-table-cell-border-color: transparent;
+}
+.table-row-cell:odd  { -fx-background-color: #FBFCFD; }     /* sọc nhẹ cho dễ đọc */
+.table-row-cell:hover { -fx-background-color: #EEF4FB; }    /* nổi hàng khi rê chuột */
+.table-row-cell:selected { -fx-background-color: #DDEBF8; }
+.table-row-cell:selected .table-cell { -fx-text-fill: #0B3D72; }
+.table-view .table-cell { -fx-text-fill: #24292F; }
+
+/* Thanh cuộn mảnh, kín đáo */
+.scroll-bar:vertical, .scroll-bar:horizontal { -fx-background-color: transparent; }
+.scroll-bar .thumb { -fx-background-color: #C4CDD5; -fx-background-radius: 8; }
+.scroll-bar .thumb:hover { -fx-background-color: #AAB4BE; }
+
+/* ===================== HUY HIỆU TRẠNG THÁI (badge/pill) ===================== */
+.pill {
+    -fx-padding: 2 10 2 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.pill-success { -fx-background-color: #DAF5E0; -fx-text-fill: #1A7F37; }
+.pill-danger  { -fx-background-color: #FFE3E3; -fx-text-fill: #B22222; }
+.pill-muted   { -fx-background-color: #EAEEF2; -fx-text-fill: #57606A; }
+.pill-warning { -fx-background-color: #FFF1C2; -fx-text-fill: #9A6700; }

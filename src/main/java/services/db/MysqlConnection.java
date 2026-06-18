@@ -39,15 +39,18 @@ public class MysqlConnection {
     /**
      * Trả về một Connection MỚI mỗi lần gọi.
      * Các DAO dùng try-with-resources sẽ tự đóng connection sau khi dùng xong.
+     *
+     * <p>Ném {@link IllegalStateException} khi không kết nối được, thay vì trả về
+     * {@code null} (tránh NPE khó hiểu ở tầng DAO). Các DAO đang bắt {@code Exception}
+     * nên sẽ xử lý gọn gàng và trả về kết quả rỗng/false.</p>
      */
     public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
-            System.err.println("Lỗi kết nối Database: " + e.getMessage());
-            e.printStackTrace();
-            return null;
+            throw new IllegalStateException(
+                "Không thể kết nối CSDL (" + URL + "): " + e.getMessage(), e);
         }
     }
 }

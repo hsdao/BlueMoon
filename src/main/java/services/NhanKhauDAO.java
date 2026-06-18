@@ -14,7 +14,10 @@ public class NhanKhauDAO {
 
     public List<NhanKhau> getAll() {
         List<NhanKhau> list = new ArrayList<>();
-        String sql = "SELECT * FROM nhan_khau ORDER BY id DESC";
+        // Sắp xếp theo SỐ phòng của hộ khẩu, rồi theo họ tên (gom cùng phòng, dễ nhìn)
+        String sql = "SELECT nk.* FROM nhan_khau nk "
+                   + "LEFT JOIN ho_khau hk ON nk.ho_khau_id = hk.id "
+                   + "ORDER BY CAST(REGEXP_REPLACE(hk.ma_ho, '[^0-9]', '') AS UNSIGNED), hk.ma_ho, nk.ho_ten";
 
         try (Connection conn = MysqlConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -54,7 +57,7 @@ public class NhanKhauDAO {
         try (Connection conn = MysqlConnection.getConnection()) {
             return insertWithConnection(conn, n);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Lỗi NhanKhauDAO: " + e.getMessage());
         }
         return false;
     }
@@ -80,6 +83,7 @@ public class NhanKhauDAO {
                         n.setId(rs.getInt(1));
                     }
                 }
+                AuditService.log("THEM", "Nhân khẩu", "Thêm: " + n.getHoTen());
                 return true;
             }
 
@@ -102,7 +106,9 @@ public class NhanKhauDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             setPreparedStatement(ps, n, true);
-            return ps.executeUpdate() > 0;
+            boolean ok = ps.executeUpdate() > 0;
+            if (ok) AuditService.log("SUA", "Nhân khẩu", "Sửa: " + n.getHoTen());
+            return ok;
 
         } catch (SQLException e) {
             System.err.println("Lỗi update: " + e.getMessage());
@@ -118,7 +124,9 @@ public class NhanKhauDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+            boolean ok = ps.executeUpdate() > 0;
+            if (ok) AuditService.log("XOA", "Nhân khẩu", "Xóa nhân khẩu id=" + id);
+            return ok;
 
         } catch (SQLException e) {
             System.err.println("Lỗi delete: " + e.getMessage());
@@ -151,46 +159,19 @@ public class NhanKhauDAO {
         return list;
     }
 
-    public List<NhanKhau> searchByName(String keyword) {
-        List<NhanKhau> list = new ArrayList<>();
-        String sql = "SELECT * FROM nhan_khau WHERE ho_ten LIKE ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, "%" + keyword + "%");
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapResultSet(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi searchByName: " + e.getMessage());
-        }
-
-        return list;
-    }
-
     // ================== SPECIAL ==================
 
-    // chuyển hộ khẩu
-    public boolean updateHoKhau(int nhanKhauId, int hoKhauMoi) {
-        String sql = "UPDATE nhan_khau SET ho_khau_id=? WHERE id=?";
-
+    // Cập nhật trạng thái nhân khẩu (dùng khi ghi biến động Khai tử / Chuyển đi)
+    public boolean updateTrangThai(int nhanKhauId, String trangThai) {
+        String sql = "UPDATE nhan_khau SET trang_thai=? WHERE id=?";
         try (Connection conn = MysqlConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, hoKhauMoi);
+            ps.setString(1, trangThai);
             ps.setInt(2, nhanKhauId);
-
             return ps.executeUpdate() > 0;
-
         } catch (SQLException e) {
-            System.err.println("Lỗi updateHoKhau: " + e.getMessage());
+            System.err.println("Lỗi updateTrangThai: " + e.getMessage());
         }
-
         return false;
     }
 

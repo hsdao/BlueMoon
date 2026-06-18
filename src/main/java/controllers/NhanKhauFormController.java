@@ -179,6 +179,10 @@ public class NhanKhauFormController implements Initializable {
             showError("Lỗi nhập liệu", "Vui lòng chọn ngày sinh!");
             return;
         }
+        if (dtpNgaySinh.getValue().isAfter(java.time.LocalDate.now())) {
+            showError("Lỗi nhập liệu", "Ngày sinh không được ở tương lai!");
+            return;
+        }
 
         // quan_he: nếu không chọn → lấy mặc định đầu tiên (tránh FK = 0)
         QuanHe qh = cmbQuanHe.getValue();
@@ -191,20 +195,7 @@ public class NhanKhauFormController implements Initializable {
             return;
         }
 
-        // Validate: số nhân khẩu hiện tại không vượt so_thanh_vien của hộ (chỉ khi thêm mới)
-        if (!isEditMode && hoKhau != null) {
-            long soHienTai = dao.getAll().stream()
-                    .filter(n -> n.getHoKhauId() == hoKhauId)
-                    .count();
-            int soThanhVien = hoKhau.getSoThanhVien();
-            if (soHienTai >= soThanhVien) {
-                showError("Vượt giới hạn",
-                        "Hộ khẩu " + hoKhau.getMaHo() + " đã đủ " + soThanhVien
-                                + " thành viên theo đăng ký.\n"
-                                + "Hãy cập nhật số thành viên trong hộ khẩu trước.");
-                return;
-            }
-        }
+        // (Số thành viên của hộ giờ tự tính theo số nhân khẩu thực tế — không còn giới hạn thủ công.)
 
         // ── 3. Build object ───────────────────────────────────────────────────
         NhanKhau nk = isEditMode ? current : new NhanKhau();
@@ -221,7 +212,7 @@ public class NhanKhauFormController implements Initializable {
         nk.setQueQuan(blankToNull(txtQueQuan));            // 10. que_quan
         nk.setDiaChiThuongTru(blankToNull(txtDiaChiThuongTru)); // 11. dia_chi_thuong_tru
         nk.setQuanHeId(qh.getId());                        // 12. quan_he_id
-        nk.setSoDienThoai(sdt);                            // 13. so_dien_thoai
+        nk.setSoDienThoai(sdt.isEmpty() ? null : sdt);     // 13. so_dien_thoai (null nếu trống)
         nk.setTrangThai(cmbTrangThai.getValue());          // 14. trang_thai
 
         // ── 4. Lưu DB ─────────────────────────────────────────────────────────

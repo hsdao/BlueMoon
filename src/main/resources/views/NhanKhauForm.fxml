@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -11,6 +12,7 @@
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.NhanKhauFormController">
+    <stylesheets><URL value="@../css/app.css" /></stylesheets>
     <padding>
         <Insets bottom="28.0" left="30.0" right="30.0" top="28.0" />
     </padding>

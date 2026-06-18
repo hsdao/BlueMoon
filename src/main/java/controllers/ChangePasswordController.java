@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.stage.Stage;
 import models.User;
+import services.PasswordUtil;
 import services.UserDAO;
 
 public class ChangePasswordController {
@@ -49,17 +49,18 @@ public class ChangePasswordController {
             return;
         }
 
-        // 4. Validate mật khẩu cũ
-        if (!currentUser.getPassword().equals(oldPass)) {
+        // 4. Validate mật khẩu cũ (đối chiếu qua PasswordUtil, hỗ trợ cả dữ liệu cũ)
+        if (!PasswordUtil.verify(currentUser.getPassword(), oldPass)) {
             showAlert(Alert.AlertType.ERROR, "Lỗi bảo mật", "Mật khẩu cũ không chính xác!");
             return;
         }
 
-        // 5. Cập nhật mật khẩu mới xuống Database
-        currentUser.setPassword(newPass);
+        // 5. Cập nhật mật khẩu mới (BĂM trước khi lưu) xuống Database
+        currentUser.setPassword(PasswordUtil.hash(newPass));
         boolean isUpdated = userDAO.updateUser(currentUser);
 
         if (isUpdated) {
+            services.AuditService.log("DOI_MK", "Tài khoản", "Đổi mật khẩu: " + currentUser.getUsername());
             showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đổi mật khẩu thành công!");
             // Xóa rỗng các ô
             txtOldPassword.clear();
@@ -71,8 +72,9 @@ public class ChangePasswordController {
     }
 
     private void handleCancel() {
-        Stage stage = (Stage) btnCancel.getScene().getWindow();
-        stage.close();
+        txtOldPassword.clear();
+        txtNewPassword.clear();
+        txtConfirmPassword.clear();
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

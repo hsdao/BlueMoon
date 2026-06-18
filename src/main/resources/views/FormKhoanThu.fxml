@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefWidth="1120.0" prefHeight="645.0" style="-fx-background-color: #F6F8FA;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FormKhoanThuController">
+   <stylesheets><URL value="@../css/app.css" /></stylesheets>
+   <children>
+      <VBox layoutX="30.0" layoutY="30.0" spacing="20.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #24292F;" text="Thông Tin Khoản Thu">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            
+            <VBox spacing="8.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Mã Khoản Thu (*):" />
+                  <TextField fx:id="txtMaKhoanThu" prefHeight="40.0" promptText="VD: KT001" />
+               </children>
+            </VBox>
+            
+            <VBox spacing="8.0">
+               <children>
+                  <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Tên Khoản Thu (*):" />
+                  <TextField fx:id="txtTenKhoanThu" prefHeight="40.0" promptText="Nhập tên khoản thu" />
+               </children>
+            </VBox>
+            
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Loại Khoản Thu (*):" />
+                        <ComboBox fx:id="cmbLoaiKhoanThu" prefHeight="40.0" prefWidth="250.0" promptText="-- Chọn Loại --" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Cách Tính:" />
+                        <ComboBox fx:id="cmbCachTinh" prefHeight="40.0" prefWidth="280.0" promptText="-- Cách tính tiền --" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Số Tháng:" />
+                        <TextField fx:id="txtSoThang" prefHeight="40.0" promptText="VD: 1" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <HBox fx:id="boxDonGiaXe" spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Đơn giá xe máy (đ/xe/tháng):" />
+                        <TextField fx:id="txtDonGiaXeMay" prefHeight="40.0" promptText="Mặc định 70000" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Đơn giá ô tô (đ/xe/tháng):" />
+                        <TextField fx:id="txtDonGiaOTo" prefHeight="40.0" promptText="Mặc định 1200000" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="lblSoTien" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Số tiền / Đơn giá (đ):" />
+                        <TextField fx:id="txtSoTien" prefHeight="40.0" promptText="Để trống nếu là tự nguyện" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Hạn Nộp:" />
+                        <DatePicker fx:id="dtpHanNop" prefHeight="40.0" prefWidth="200.0" promptText="DD/MM/YYYY" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15.0">
+               <children>
+                  <Button fx:id="btnHuy" mnemonicParsing="false" onAction="#onHuyClick" prefHeight="40.0" prefWidth="110.0"
+                          text="Hủy bỏ" styleClass="btn-secondary" />
+                  <Button fx:id="btnLuu" mnemonicParsing="false" onAction="#onLuuClick" prefHeight="40.0" prefWidth="140.0"
+                          text="Lưu thông tin" styleClass="btn-primary" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

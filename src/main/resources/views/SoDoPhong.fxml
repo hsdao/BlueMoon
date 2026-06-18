@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox styleClass="app-bg" spacing="16.0"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.SoDoPhongController">
+    <stylesheets><URL value="@../css/app.css" /></stylesheets>
+    <padding><Insets top="30.0" right="30.0" bottom="30.0" left="30.0" /></padding>
+    <children>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="14.0">
+            <children>
+                <Label text="Sơ đồ căn hộ" styleClass="page-title" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="● Đã nộp đủ" style="-fx-text-fill: #2DA44E; -fx-font-weight: bold;" />
+                <Label text="● Còn nợ" style="-fx-text-fill: #82071E; -fx-font-weight: bold;" />
+                <Button text="Làm mới" onAction="#onRefresh" mnemonicParsing="false" styleClass="btn-secondary" />
+            </children>
+        </HBox>
+
+        <Label fx:id="lblSummary" style="-fx-text-fill: #57606a;" />
+
+        <!-- Lưới phòng theo tầng -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
+            <content>
+                <VBox fx:id="container" spacing="20.0">
+                    <padding><Insets top="4.0" right="4.0" bottom="4.0" left="4.0" /></padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>

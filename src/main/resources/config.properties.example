@@ -1,0 +1,6 @@
+# MẪU cấu hình kết nối MySQL.
+# Copy file này thành "config.properties" (cùng thư mục) rồi điền thông tin thật.
+# KHÔNG commit config.properties chứa mật khẩu thật lên Git.
+db.url=jdbc:mysql://localhost:3306/bluemoon?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+db.user=root
+db.password=YOUR_MYSQL_PASSWORD

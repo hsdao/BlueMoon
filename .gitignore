@@ -1,1 +1,39 @@
+# Compiled class file
+*.class
+# Log file
+*.log
+# BlueJ files
+*.ctxt
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+# virtual machine crash logs
+hs_err_pid*
+replay_pid*
+.idea/
+*.iml
+target/
+# Bỏ qua thư mục tài liệu vì chỉ dùng để đọc
+Tài liệu/
+# KHÔNG commit file cấu hình chứa mật khẩu DB. Chỉ commit bản mẫu config.properties.example
+config.properties
+src/main/resources/config.properties
 
+# Không push file cài đặt IDE / AI assistant
+.claude/
+
+# Không push tài liệu báo cáo và sơ đồ
+docs/diagrams/
+docs/*.docx
+docs/~$*.docx
+docs/gen_*.py
+
+# Không push file Word tạm (lock file)
+~$*.docx

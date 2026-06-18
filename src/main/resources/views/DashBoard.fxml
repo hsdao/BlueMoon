@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="964.0" prefWidth="1190.0" style="-fx-background-color: #F6F8FA;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+    <children>
+        <VBox spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+            <children>
+
+                <!-- KHỐI 1: HEADER & SHORTCUTS -->
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="15.0">
+                    <children>
+                        <Label text="Tổng quan hệ thống" textFill="#24292f">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <!-- Đã thêm fx:id="btnTaoKhoanThu" và onAction -->
+                        <Button fx:id="btnTaoKhoanThu" onAction="#handleTaoKhoanThu" mnemonicParsing="false" styleClass="btn-primary" text="Tạo khoản thu">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </padding>
+                        </Button>
+
+                        <!-- Đã thêm fx:id="btnThuPhiNgay" và onAction -->
+                        <Button fx:id="btnThuPhiNgay" onAction="#handleThuPhiNgay" mnemonicParsing="false" styleClass="btn-success" text="Thu phí ngay">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                            </padding>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <!-- KHỐI 2: THẺ SỐ LIỆU TỔNG QUAN -->
+                <HBox spacing="30.0">
+                    <children>
+                        <!-- Card 1: Tổng số hộ -->
+                        <VBox alignment="CENTER" prefHeight="120.0" styleClass="card" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Tổng số hộ khẩu" textFill="#57606a">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblTongHo" text="0" textFill="#0969da">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <!-- Card 2: Tổng khoản thu -->
+                        <VBox alignment="CENTER" prefHeight="120.0" styleClass="card" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Tổng khoản thu" textFill="#57606a">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblTongKhoanThu" text="0" textFill="#0969da">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <!-- Card 3: Doanh thu tháng -->
+                        <VBox alignment="CENTER" prefHeight="120.0" styleClass="card" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Doanh thu tháng này (VNĐ)" textFill="#57606a">
+                                    <font>
+                                        <Font size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblTongTienThang" text="0" textFill="#2da44e">
+                                    <font>
+                                        <Font name="System Bold" size="36.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <!-- KHỐI 3: BIỂU ĐỒ TRỰC QUAN -->
+                <VBox styleClass="card" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label text="Biểu đồ thu phí các tháng gần đây">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="20.0" top="20.0" />
+                            </VBox.margin>
+                        </Label>
+                        <BarChart fx:id="chartDoanhThu" VBox.vgrow="ALWAYS">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </VBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

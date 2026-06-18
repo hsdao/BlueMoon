@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<!--Form thêm/sửa hộ khẩu: gồm chọn phòng + thông tin CHỦ HỘ (nhân khẩu mới)-->
+<ScrollPane fitToWidth="true" style="-fx-background-color: white;"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.HoKhauFormController">
+    <stylesheets><URL value="@../css/app.css" /></stylesheets>
+    <content>
+        <VBox prefWidth="470.0" spacing="16.0" style="-fx-background-color: white;">
+            <padding><Insets bottom="25.0" left="25.0" right="25.0" top="25.0" /></padding>
+            <children>
+                <Label fx:id="lblTitle" text="Thêm Hộ Khẩu Mới" textFill="#24292f">
+                    <font><Font name="System Bold" size="22.0" /></font>
+                </Label>
+
+                <GridPane hgap="15.0" vgap="12.0">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="-Infinity" prefWidth="140.0" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <children>
+                        <Label text="Phòng (*):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="cmbPhong" prefWidth="300.0" promptText="-- Chọn phòng trống --" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Diện tích (m²):" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtDienTich" editable="false" promptText="Tự điền theo phòng" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Số thành viên:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtSoThanhVien" editable="false" promptText="Tự tính" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="── Thông tin chủ hộ ──" style="-fx-font-weight: bold; -fx-text-fill: #1E3A5F;"
+                               GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
+                        <Label text="Họ tên chủ hộ (*):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <TextField fx:id="txtHoTen" promptText="Nhập họ tên chủ hộ" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <Label text="Ngày sinh (*):" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <DatePicker fx:id="dpNgaySinh" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <Label text="Giới tính:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <ComboBox fx:id="cmbGioiTinh" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                        <Label text="CCCD:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <TextField fx:id="txtCccd" promptText="9 hoặc 12 chữ số (nếu có)" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                        <Label text="SĐT chủ hộ (*):" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <TextField fx:id="txtSdt" promptText="Nhập 10-11 số" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+                        <Label text="── Thông tin hộ ──" style="-fx-font-weight: bold; -fx-text-fill: #1E3A5F;"
+                               GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="9" />
+
+                        <Label text="Số xe máy:" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                        <TextField fx:id="txtSoXeMay" promptText="VD: 1" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
+                        <Label text="Số ô tô:" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+                        <TextField fx:id="txtSoOTo" promptText="VD: 0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+
+                        <Label text="Ngày tạo:" GridPane.columnIndex="0" GridPane.rowIndex="12" />
+                        <DatePicker fx:id="dpNgayTao" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+
+                        <Label text="Trạng thái:" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+                        <ComboBox fx:id="cbTrangThai" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+
+                        <Label text="Ghi chú:" GridPane.columnIndex="0" GridPane.rowIndex="14" GridPane.valignment="TOP" />
+                        <TextArea fx:id="txtGhiChu" prefRowCount="2" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                    </children>
+                </GridPane>
+
+                <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#handleCancel" styleClass="btn-secondary" text="Hủy bỏ" />
+                        <Button mnemonicParsing="false" onAction="#handleSave" styleClass="btn-primary" text="Lưu thông tin" />
+                    </children>
+                    <VBox.margin><Insets top="10.0" /></VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="460.0" prefWidth="480.0"
+            style="-fx-background-color: #F6F8FA;"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.TamTruFormController">
+   <stylesheets><URL value="@../css/app.css" /></stylesheets>
+   <children>
+      <VBox spacing="16.0"
+            AnchorPane.bottomAnchor="20.0"
+            AnchorPane.leftAnchor="24.0"
+            AnchorPane.rightAnchor="24.0"
+            AnchorPane.topAnchor="20.0">
+         <children>
+
+            <!-- Tiêu đề form -->
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #24292F;"
+                   text="Đăng ký Tạm trú / Tạm vắng" />
+
+            <!-- Grid nhập liệu -->
+            <GridPane hgap="12.0" vgap="10.0">
+               <columnConstraints>
+                  <ColumnConstraints prefWidth="140.0" />
+                  <ColumnConstraints prefWidth="280.0" hgrow="ALWAYS" />
+               </columnConstraints>
+
+               <!-- Nhân khẩu -->
+               <Label text="Nhân khẩu *" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                      style="-fx-font-weight: bold;" />
+               <ComboBox fx:id="cmbNhanKhau" prefWidth="280.0"
+                         GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+               <!-- Loại -->
+               <Label text="Loại *" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                      style="-fx-font-weight: bold;" />
+               <ComboBox fx:id="cmbLoai" prefWidth="280.0"
+                         GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+               <!-- Từ ngày -->
+               <Label text="Từ ngày *" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                      style="-fx-font-weight: bold;" />
+               <DatePicker fx:id="dpTuNgay" prefWidth="280.0"
+                           GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+               <!-- Đến ngày -->
+               <Label text="Đến ngày" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+               <DatePicker fx:id="dpDenNgay" prefWidth="280.0"
+                           GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+               <!-- Địa chỉ -->
+               <Label text="Địa chỉ" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+               <TextField fx:id="txtDiaChi" prefWidth="280.0"
+                          promptText="Địa chỉ nơi tạm trú / tạm vắng..."
+                          GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+               <!-- Lý do -->
+               <Label text="Lý do" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+               <TextField fx:id="txtLyDo" prefWidth="280.0"
+                          promptText="Lý do tạm trú / tạm vắng..."
+                          GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+               <!-- Trạng thái -->
+               <Label text="Trạng thái" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+               <ComboBox fx:id="cmbTrangThai" prefWidth="280.0"
+                         GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            </GridPane>
+
+            <!-- Label lỗi -->
+            <Label fx:id="lblError"
+                   style="-fx-text-fill: #CF222E; -fx-font-size: 12px;"
+                   text="" wrapText="true" />
+
+            <!-- Nút hành động -->
+            <HBox spacing="12.0" alignment="CENTER_RIGHT">
+               <children>
+                  <Button fx:id="btnHuy"
+                          text="Hủy"
+                          style="-fx-background-color: #D0D7DE; -fx-text-fill: #24292F;
+                                 -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 20 8 20;" />
+                  <Button fx:id="btnLuu"
+                          text="Lưu"
+                          style="-fx-background-color: #0969DA; -fx-text-fill: white;
+                                 -fx-font-weight: bold; -fx-background-radius: 6;
+                                 -fx-cursor: hand; -fx-padding: 8 20 8 20;" />
+               </children>
+            </HBox>
+
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

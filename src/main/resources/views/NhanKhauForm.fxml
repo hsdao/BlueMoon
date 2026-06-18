@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<!-- Form thêm/sửa nhân khẩu — dialog, không cần sidebar -->
+<VBox prefWidth="680.0" spacing="18.0"
+      style="-fx-background-color: white;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.NhanKhauFormController">
+    <stylesheets><URL value="@../css/app.css" /></stylesheets>
+    <padding>
+        <Insets bottom="28.0" left="30.0" right="30.0" top="28.0" />
+    </padding>
+    <children>
+        <!-- Tiêu đề -->
+        <Label fx:id="lblTitle" text="Thêm Nhân Khẩu Mới" textFill="#24292f">
+            <font><Font name="System Bold" size="22.0" /></font>
+        </Label>
+
+        <GridPane hgap="15.0" vgap="14.0">
+            <columnConstraints>
+                <!-- label col -->
+                <ColumnConstraints minWidth="-Infinity" prefWidth="130.0" />
+                <!-- input col -->
+                <ColumnConstraints hgrow="ALWAYS" />
+                <!-- label col -->
+                <ColumnConstraints minWidth="-Infinity" prefWidth="130.0" />
+                <!-- input col -->
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+            <children>
+
+                <!-- ROW 0: Họ tên (span toàn bộ) -->
+                <Label text="Họ và tên (*):"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtHoTen" promptText="Nhập họ và tên đầy đủ"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0"
+                           GridPane.columnSpan="3" />
+
+                <!-- ROW 1: Ngày sinh | Giới tính -->
+                <Label text="Ngày sinh (*):"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <DatePicker fx:id="dtpNgaySinh" prefWidth="200.0"
+                            GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Giới tính (*):"
+                       GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <ComboBox fx:id="cmbGioiTinh" prefWidth="160.0"
+                          GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                <!-- ROW 2: CCCD | Số điện thoại -->
+                <Label text="Số CCCD:"
+                       GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtCccd" promptText="9 hoặc 12 chữ số"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Điện thoại (*):"
+                       GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField fx:id="txtSoDienThoai" promptText="10-11 số"
+                           GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                <!-- ROW 3: Dân tộc | Tôn giáo -->
+                <Label text="Dân tộc:"
+                       GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="txtDanToc" promptText="VD: Kinh"
+                           GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Tôn giáo:"
+                       GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <TextField fx:id="txtTonGiao" promptText="VD: Không"
+                           GridPane.columnIndex="3" GridPane.rowIndex="3" />
+
+                <!-- ROW 4: Nghề nghiệp | Nơi làm việc -->
+                <Label text="Nghề nghiệp:"
+                       GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="txtNgheNghiep" promptText="VD: Kỹ sư"
+                           GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                <Label text="Nơi làm việc:"
+                       GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <TextField fx:id="txtNoiLamViec" promptText="Tên công ty / cơ quan"
+                           GridPane.columnIndex="3" GridPane.rowIndex="4" />
+
+                <!-- ROW 5: Quê quán | Địa chỉ thường trú -->
+                <Label text="Quê quán:"
+                       GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <TextField fx:id="txtQueQuan" promptText="Tỉnh / thành phố"
+                           GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                <Label text="Thường trú:"
+                       GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <TextField fx:id="txtDiaChiThuongTru" promptText="Địa chỉ thường trú"
+                           GridPane.columnIndex="3" GridPane.rowIndex="5" />
+
+                <!-- ROW 6: Hộ khẩu | Quan hệ chủ hộ -->
+                <Label text="Hộ khẩu (*):"
+                       GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <ComboBox fx:id="cmbHoKhau" prefWidth="200.0"
+                          promptText="-- Chọn hộ khẩu --"
+                          GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                <Label text="Quan hệ chủ hộ:"
+                       GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                <ComboBox fx:id="cmbQuanHe" prefWidth="160.0"
+                          GridPane.columnIndex="3" GridPane.rowIndex="6" />
+
+                <!-- ROW 7: Trạng thái -->
+                <Label text="Trạng thái:"
+                       GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <ComboBox fx:id="cmbTrangThai" prefWidth="200.0"
+                          GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+            </children>
+        </GridPane>
+
+        <!-- Buttons -->
+        <HBox alignment="CENTER_RIGHT" spacing="15.0">
+            <VBox.margin><Insets top="6.0" /></VBox.margin>
+            <children>
+                <Button mnemonicParsing="false" onAction="#handleCancel"
+                        style="-fx-background-color: #F6F8FA; -fx-border-color: #D0D7DE;
+                               -fx-border-radius: 4; -fx-cursor: hand; -fx-padding: 8 20 8 20;"
+                        text="Hủy bỏ" />
+                <Button mnemonicParsing="false" onAction="#handleSave"
+                        style="-fx-background-color: #0969DA; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-background-radius: 4;
+                               -fx-cursor: hand; -fx-padding: 8 20 8 20;"
+                        text="Lưu thông tin" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

@@ -15,9 +15,8 @@ public class NhanKhauService {
             return "Họ và tên phải có ít nhất 2 ký tự!";
         if (isBlank(gioiTinh))
             return "Vui lòng chọn giới tính!";
-        if (isBlank(soDienThoai))
-            return "Số điện thoại không được để trống!";
-        if (!soDienThoai.trim().matches("^0[0-9]{9,10}$"))
+        // SĐT KHÔNG bắt buộc (trẻ em/người già có thể không có); chỉ kiểm định dạng khi có nhập.
+        if (!isBlank(soDienThoai) && !soDienThoai.trim().matches("^0[0-9]{9,10}$"))
             return "Số điện thoại phải bắt đầu bằng 0 và có 10-11 chữ số!";
         if (hoKhauId <= 0)
             return "Vui lòng chọn hộ khẩu!";

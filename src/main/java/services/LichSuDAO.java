@@ -35,7 +35,7 @@ public class LichSuDAO {
         try (Connection conn = MysqlConnection.getConnection()) {
             return insertWithConnection(conn, l);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Lỗi LichSuDAO: " + e.getMessage());
         }
         return false;
     }
@@ -85,86 +85,6 @@ public class LichSuDAO {
         }
 
         return false;
-    }
-
-    // ================== AUTO LOG (GIỐNG SERVICE) ==================
-
-    public boolean ghiLog(int nhanKhauId, Integer hoKhauId,
-                          String loai, String ghiChu, String nguoi) {
-
-        LichSuBienDong log = new LichSuBienDong();
-        log.setNhanKhauId(nhanKhauId);
-        log.setHoKhauId(hoKhauId);
-        log.setLoaiBienDong(loai);
-        log.setNgayBienDong(LocalDate.now());
-        log.setGhiChu(ghiChu);
-        log.setNguoiThucHien(nguoi);
-
-        return insert(log);
-    }
-
-    // ================== TRANSACTION ALL-IN-ONE ==================
-
-    /**
-     * Ví dụ: thêm nhân khẩu + ghi log trong 1 transaction
-     * (m sẽ gọi DAO khác ở đây nếu cần)
-     */
-    public boolean executeWithLog(
-            InsertAction action,
-            int nhanKhauId,
-            Integer hoKhauId,
-            String loai,
-            String ghiChu,
-            String nguoi) {
-
-        Connection conn = null;
-
-        try {
-            conn = MysqlConnection.getConnection();
-            conn.setAutoCommit(false);
-
-            // 1. chạy action chính (vd: insert nhân khẩu)
-            boolean ok1 = action.execute(conn);
-
-            if (!ok1) {
-                conn.rollback();
-                return false;
-            }
-
-            // 2. ghi log
-            LichSuBienDong log = new LichSuBienDong();
-            log.setNhanKhauId(nhanKhauId);
-            log.setHoKhauId(hoKhauId);
-            log.setLoaiBienDong(loai);
-            log.setNgayBienDong(LocalDate.now());
-            log.setGhiChu(ghiChu);
-            log.setNguoiThucHien(nguoi);
-
-            boolean ok2 = insertWithConnection(conn, log);
-
-            if (!ok2) {
-                conn.rollback();
-                return false;
-            }
-
-            conn.commit();
-            return true;
-
-        } catch (Exception e) {
-            try {
-                if (conn != null) conn.rollback();
-            } catch (Exception ignored) {}
-
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    // ================== INTERFACE CHO ACTION ==================
-
-    public interface InsertAction {
-        boolean execute(Connection conn) throws Exception;
     }
 
     // ================== HELPER ==================

@@ -26,9 +26,9 @@
                   <TextField fx:id="txtTimKiem" prefHeight="40.0" prefWidth="250.0" promptText="Tìm kiếm mã, tên khoản thu..." style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
                   <HBox alignment="CENTER_RIGHT" spacing="15.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="btnThemMoi" mnemonicParsing="false" onAction="#onThemMoiClick" prefHeight="40.0" text="Thêm Khoản Thu" style="-fx-background-color: #0969DA; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
-                        <Button fx:id="btnSua" mnemonicParsing="false" onAction="#onSuaClick" prefHeight="40.0" text="Sửa" style="-fx-background-color: #0969DA; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
-                        <Button fx:id="btnXoa" mnemonicParsing="false" onAction="#onXoaClick" prefHeight="40.0" text="Xóa" style="-fx-background-color: #82071E; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
+                        <Button fx:id="btnThemMoi" mnemonicParsing="false" onAction="#onThemMoiClick" prefHeight="40.0" text="Thêm Khoản Thu" styleClass="btn-primary" />
+                        <Button fx:id="btnSua" mnemonicParsing="false" onAction="#onSuaClick" prefHeight="40.0" text="Sửa" styleClass="btn-primary" />
+                        <Button fx:id="btnXoa" mnemonicParsing="false" onAction="#onXoaClick" prefHeight="40.0" text="Xóa" styleClass="btn-danger" />
                      </children>
                   </HBox>
                </children>
@@ -48,7 +48,7 @@
                      <cellValueFactory><PropertyValueFactory property="tenKhoan" /></cellValueFactory>
                   </TableColumn>
                   <TableColumn text="Loại" style="-fx-alignment: CENTER;">
-                     <cellValueFactory><PropertyValueFactory property="loai" /></cellValueFactory>
+                     <cellValueFactory><PropertyValueFactory property="loaiLabel" /></cellValueFactory>
                   </TableColumn>
                   <TableColumn text="Số Tiền" style="-fx-alignment: CENTER;">
                      <cellValueFactory><PropertyValueFactory property="soTien" /></cellValueFactory>
@@ -57,7 +57,7 @@
                      <cellValueFactory><PropertyValueFactory property="hanNop" /></cellValueFactory>
                   </TableColumn>
                   <TableColumn text="Trạng Thái" style="-fx-alignment: CENTER;">
-                     <cellValueFactory><PropertyValueFactory property="trangThai" /></cellValueFactory>
+                     <cellValueFactory><PropertyValueFactory property="trangThaiLabel" /></cellValueFactory>
                   </TableColumn>
                </columns>
             </TableView>

@@ -22,5 +22,18 @@ replay_pid*
 target/
 # Bỏ qua thư mục tài liệu vì chỉ dùng để đọc
 Tài liệu/
-# Cố tình để config.properties được up lên nhánh cho nhóm xài chung
-# config.properties
+# KHÔNG commit file cấu hình chứa mật khẩu DB. Chỉ commit bản mẫu config.properties.example
+config.properties
+src/main/resources/config.properties
+
+# Không push file cài đặt IDE / AI assistant
+.claude/
+
+# Không push tài liệu báo cáo và sơ đồ
+docs/diagrams/
+docs/*.docx
+docs/~$*.docx
+docs/gen_*.py
+
+# Không push file Word tạm (lock file)
+~$*.docx

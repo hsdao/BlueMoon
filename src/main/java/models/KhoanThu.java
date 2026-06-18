@@ -9,6 +9,10 @@ public class KhoanThu {
     private String tenKhoan;
     private String loai;
     private Double soTien; // Dùng Double (chữ D to) để chứa được giá trị NULL
+    private String cachTinh;   // FLAT / PER_NHANKHAU / PER_M2 / PER_XE (xem TinhPhiService)
+    private int soThang = 1;   // số tháng thu (mặc định 1), dùng cho phí theo tháng
+    private Double donGiaXeMay; // đơn giá/xe máy/tháng (chỉ dùng khi PER_XE; null = mặc định 70.000)
+    private Double donGiaOTo;   // đơn giá/ô tô/tháng  (chỉ dùng khi PER_XE; null = mặc định 1.200.000)
     private Date thangThu;
     private Date hanNop;
     private String moTa;
@@ -33,6 +37,18 @@ public class KhoanThu {
     public Double getSoTien() { return soTien; }
     public void setSoTien(Double soTien) { this.soTien = soTien; }
 
+    public String getCachTinh() { return cachTinh; }
+    public void setCachTinh(String cachTinh) { this.cachTinh = cachTinh; }
+
+    public int getSoThang() { return soThang; }
+    public void setSoThang(int soThang) { this.soThang = soThang; }
+
+    public Double getDonGiaXeMay() { return donGiaXeMay; }
+    public void setDonGiaXeMay(Double donGiaXeMay) { this.donGiaXeMay = donGiaXeMay; }
+
+    public Double getDonGiaOTo() { return donGiaOTo; }
+    public void setDonGiaOTo(Double donGiaOTo) { this.donGiaOTo = donGiaOTo; }
+
     public Date getThangThu() { return thangThu; }
     public void setThangThu(Date thangThu) { this.thangThu = thangThu; }
 
@@ -44,4 +60,8 @@ public class KhoanThu {
 
     public String getTrangThai() { return trangThai; }
     public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+
+    // --- Nhãn tiếng Việt cho hiển thị trên bảng (không ảnh hưởng dữ liệu DB) ---
+    public String getLoaiLabel()      { return Labels.khoanThuLoai(loai); }
+    public String getTrangThaiLabel() { return Labels.khoanThuTrangThai(trangThai); }
 }

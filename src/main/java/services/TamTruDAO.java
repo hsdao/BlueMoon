@@ -150,53 +150,6 @@ public class TamTruDAO {
         return list;
     }
 
-    // 7. Lọc theo trạng thái
-    public List<TamTruTamVang> findByTrangThai(String trangThai) {
-        List<TamTruTamVang> list = new ArrayList<>();
-        String sql = "SELECT * FROM tam_tru_tam_vang WHERE trang_thai = ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, trangThai);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapResultSet(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi findByTrangThai: " + e.getMessage());
-        }
-
-        return list;
-    }
-
-    // 8. Lọc theo khoảng thời gian
-    public List<TamTruTamVang> findByDateRange(LocalDate from, LocalDate to) {
-        List<TamTruTamVang> list = new ArrayList<>();
-        String sql = "SELECT * FROM tam_tru_tam_vang WHERE tu_ngay >= ? AND den_ngay <= ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setDate(1, Date.valueOf(from));
-            ps.setDate(2, Date.valueOf(to));
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapResultSet(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi findByDateRange: " + e.getMessage());
-        }
-
-        return list;
-    }
-
     // ================== HELPER ==================
 
     // map ResultSet -> Object

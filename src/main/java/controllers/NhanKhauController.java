@@ -38,8 +38,7 @@ public class NhanKhauController implements Initializable {
 
     // ── FXML bindings ─────────────────────────────────────────────────────────
     @FXML private TableView<NhanKhau>            tableNhanKhau;
-    @FXML private TableColumn<NhanKhau, Integer> colId;
-    @FXML private TableColumn<NhanKhau, Integer> colHoKhauId;
+    @FXML private TableColumn<NhanKhau, String>  colHoKhauId;  // hiển thị mã PHÒNG
     @FXML private TableColumn<NhanKhau, String>  colHoTen;
     @FXML private TableColumn<NhanKhau, String>  colNgaySinh;   // custom cell
     @FXML private TableColumn<NhanKhau, String>  colGioiTinh;
@@ -65,6 +64,8 @@ public class NhanKhauController implements Initializable {
     private Map<Integer, String> quanHeMap;
     /** Map hoKhauId → soThanhVien để validate khi thêm nhân khẩu */
     private Map<Integer, Integer> hoKhauSoTvMap;
+    /** Map hoKhauId → mã phòng (ma_ho) để hiển thị cột Phòng thay vì id */
+    private Map<Integer, String> hoKhauPhongMap = new java.util.HashMap<>();
 
     private boolean isAdmin;
 
@@ -94,13 +95,24 @@ public class NhanKhauController implements Initializable {
     // ── Columns ───────────────────────────────────────────────────────────────
 
     private void setupColumns() {
-        colId         .setCellValueFactory(new PropertyValueFactory<>("id"));
-        colHoKhauId   .setCellValueFactory(new PropertyValueFactory<>("hoKhauId"));
         colHoTen      .setCellValueFactory(new PropertyValueFactory<>("hoTen"));
         colGioiTinh   .setCellValueFactory(new PropertyValueFactory<>("gioiTinh"));
         colCccd       .setCellValueFactory(new PropertyValueFactory<>("cccd"));
         colSoDienThoai.setCellValueFactory(new PropertyValueFactory<>("soDienThoai"));
-        colTrangThai  .setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        colTrangThai  .setCellValueFactory(new PropertyValueFactory<>("trangThaiLabel"));
+
+        // Cột Phòng: tra map hoKhauId -> mã phòng (không hiện id thô)
+        colHoKhauId.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) {
+                    setText(null); return;
+                }
+                NhanKhau nk = getTableView().getItems().get(getIndex());
+                setText(hoKhauPhongMap.getOrDefault(nk.getHoKhauId(), "—"));
+            }
+        });
 
         // Ngày sinh: format dd/MM/yyyy
         colNgaySinh.setCellFactory(col -> new TableCell<>() {
@@ -166,10 +178,14 @@ public class NhanKhauController implements Initializable {
 
     /** Gọi sau mỗi thao tác CRUD. setAll() → filteredList tự re-evaluate. */
     public void loadDataFromDB() {
+        hoKhauDAO.recomputeAllSoThanhVien();   // số thành viên = số nhân khẩu thực tế
         nhanKhauList.setAll(nhanKhauDAO.getAll());
-        // Rebuild map hoKhauId → soThanhVien để validate
-        hoKhauSoTvMap = hoKhauDAO.getAllHoKhau().stream()
-                .collect(Collectors.toMap(HoKhau::getId, HoKhau::getSoThanhVien));
+        // Rebuild các map tra cứu hộ khẩu (số thành viên để validate + mã phòng để hiển thị)
+        List<HoKhau> hos = hoKhauDAO.getAllHoKhau();
+        hoKhauSoTvMap = hos.stream()
+                .collect(Collectors.toMap(HoKhau::getId, HoKhau::getSoThanhVien, (a, b) -> a));
+        hoKhauPhongMap = hos.stream()
+                .collect(Collectors.toMap(HoKhau::getId, HoKhau::getMaHo, (a, b) -> a));
     }
 
     // ── Filter combo ──────────────────────────────────────────────────────────
@@ -281,6 +297,16 @@ public class NhanKhauController implements Initializable {
     }
 
     private void handleDelete(NhanKhau nk) {
+        // Chặn xóa nếu nhân khẩu đang là CHỦ HỘ của một hộ (tránh hộ bị treo chủ hộ)
+        boolean laChuHo = hoKhauDAO.getAllHoKhau().stream()
+                .anyMatch(h -> h.getChuHoId() != null && h.getChuHoId() == nk.getId());
+        if (laChuHo) {
+            new Alert(Alert.AlertType.WARNING,
+                    "\"" + nk.getHoTen() + "\" đang là CHỦ HỘ. Hãy đổi chủ hộ khác cho hộ này "
+                    + "(sửa hộ khẩu) trước khi xóa nhân khẩu.").showAndWait();
+            return;
+        }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Xác nhận xóa");
         confirm.setHeaderText(null);

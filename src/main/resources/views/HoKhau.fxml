@@ -7,75 +7,56 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="1024.0" prefWidth="1440.0"
+<VBox style="-fx-background-color: #F6F8FA;"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.HoKhauController">
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
     <children>
-        <!-- Sidebar xanh -->
-        <VBox prefWidth="250.0" style="-fx-background-color: #1E3A5F;" />
-
-        <!-- Main content -->
-        <VBox HBox.hgrow="ALWAYS">
+        <!-- Title + Search + Add -->
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
             <children>
-                <!-- Header bar -->
-                <HBox minHeight="60.0" prefHeight="60.0"
-                      style="-fx-background-color: #1E3A5F;" />
-
-                <!-- Content area -->
-                <VBox style="-fx-background-color: #F6F8FA;" VBox.vgrow="ALWAYS">
-                    <padding>
-                        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-                    </padding>
-                    <children>
-                        <!-- Title + Search + Add -->
-                        <HBox alignment="CENTER_LEFT" spacing="15.0">
-                            <children>
-                                <Label text="Quản lý hộ khẩu" textFill="#24292F">
-                                    <font><Font name="System Bold" size="24.0" /></font>
-                                </Label>
-                                <Region HBox.hgrow="ALWAYS" />
-                                <TextField fx:id="searchField"
-                                           prefWidth="250.0"
-                                           promptText="Tìm kiếm mã, địa chỉ, SĐT..."
-                                           style="-fx-border-color: #D0D7DE; -fx-background-color: white;
-                                                  -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
-                                <Button fx:id="btnThemMoi"
-                                        mnemonicParsing="false"
-                                        onAction="#handleAdd"
-                                        style="-fx-background-color: #0969DA; -fx-text-fill: white;
-                                               -fx-font-weight: bold; -fx-padding: 8 16 8 16;
-                                               -fx-background-radius: 4; -fx-cursor: hand;"
-                                        text="+ Thêm mới" />
-                            </children>
-                            <VBox.margin><Insets bottom="20.0" /></VBox.margin>
-                        </HBox>
-
-                        <!-- Table -->
-                        <TableView fx:id="tableHoKhau" VBox.vgrow="ALWAYS">
-                            <columnResizePolicy>
-                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                            </columnResizePolicy>
-                            <columns>
-                                <TableColumn fx:id="colMaHo"       text="Mã hộ khẩu" />
-                                <TableColumn fx:id="colChuHo"      text="ID Chủ hộ" />
-                                <TableColumn fx:id="colSdt"        text="Số điện thoại" />
-                                <TableColumn fx:id="colDiaChi"     text="Địa chỉ" />
-                                <TableColumn fx:id="colSoThanhVien" text="Số TV" />
-                                <TableColumn fx:id="colNgayTao"    text="Ngày tạo" />
-                                <TableColumn fx:id="colTrangThai"  text="Trạng thái" />
-                                <TableColumn fx:id="colGhiChu"     text="Ghi chú" />
-                                <TableColumn fx:id="colHanhDong"   text="Hành động" />
-                            </columns>
-                        </TableView>
-                    </children>
-                </VBox>
+                <Label text="Quản lý hộ khẩu" textFill="#24292F">
+                    <font><Font name="System Bold" size="24.0" /></font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <TextField fx:id="searchField"
+                           prefWidth="250.0"
+                           promptText="Tìm kiếm mã, địa chỉ, SĐT..."
+                           style="-fx-border-color: #D0D7DE; -fx-background-color: white;
+                                  -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 8;" />
+                <Button fx:id="btnThemMoi"
+                        mnemonicParsing="false"
+                        onAction="#handleAdd"
+                        prefHeight="38.0"
+                        styleClass="btn-primary"
+                        text="+ Thêm mới" />
             </children>
-        </VBox>
+            <VBox.margin><Insets bottom="20.0" /></VBox.margin>
+        </HBox>
+
+        <!-- Table -->
+        <TableView fx:id="tableHoKhau" VBox.vgrow="ALWAYS">
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            <columns>
+                <TableColumn fx:id="colMaHo"        text="Mã hộ khẩu" />
+                <TableColumn fx:id="colChuHo"        text="ID Chủ hộ" />
+                <TableColumn fx:id="colSdt"          text="Số điện thoại" />
+                <TableColumn fx:id="colDiaChi"       text="Địa chỉ" />
+                <TableColumn fx:id="colSoThanhVien"  text="Số TV" />
+                <TableColumn fx:id="colNgayTao"      text="Ngày tạo" />
+                <TableColumn fx:id="colTrangThai"    text="Trạng thái" />
+                <TableColumn fx:id="colGhiChu"       text="Ghi chú" />
+                <TableColumn fx:id="colHanhDong"     text="Hành động" />
+            </columns>
+        </TableView>
     </children>
-</HBox>
+</VBox>

@@ -1,17 +1,22 @@
 package application;
 
-import atlantafx.base.theme.PrimerLight;
+import controllers.SettingsController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Entry point của ứng dụng BlueMoon.
+ * Tuần 4: Tích hợp load theme từ settings.properties (SettingsController.applyStoredTheme)
+ * trước khi hiển thị màn hình Login.
+ */
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-        // Set Theme AtlantaFX (PrimerLight) defaults as required in specs
-        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+        // Tuần 4: Load theme đã lưu (mặc định PrimerLight nếu chưa có file preference)
+        SettingsController.applyStoredTheme();
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Login.fxml"));

@@ -9,12 +9,9 @@ public class HoKhauService {
             String diaChi,
             String soThanhVienStr
     ) {
-        // Mã hộ
+        // Mã hộ / phòng (lấy từ danh mục phòng nên không ràng buộc định dạng cứng)
         if (isBlank(maHo)) {
-            return "Mã hộ khẩu không được để trống!";
-        }
-        if (!maHo.trim().matches("^HK[0-9]{3,}$")) {
-            return "Mã hộ khẩu phải theo định dạng HKxxx (VD: HK001)!";
+            return "Vui lòng chọn phòng cho hộ khẩu!";
         }
 
         // Số điện thoại

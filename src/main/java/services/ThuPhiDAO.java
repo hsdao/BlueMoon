@@ -38,24 +38,7 @@ public class ThuPhiDAO {
                 while (rs.next()) list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi lấy nộp tiền theo khoản thu", e);
-        }
-        return list;
-    }
-
-    /** Lấy danh sách nộp tiền theo hộ khẩu. */
-    public List<NopTien> getByHoKhau(int hoKhauId) {
-        List<NopTien> list = new ArrayList<>();
-        String sql = "SELECT id,khoan_thu_id,ho_khau_id,so_tien,nguoi_thu,ghi_chu,ngay_nop "
-                   + "FROM nop_tien WHERE ho_khau_id=? ORDER BY ngay_nop DESC";
-        try (Connection c = MysqlConnection.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1, hoKhauId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) list.add(mapRow(rs));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi lấy nộp tiền theo hộ khẩu", e);
+            System.err.println("Lỗi lấy nộp tiền theo khoản thu: " + e.getMessage());
         }
         return list;
     }
@@ -71,7 +54,9 @@ public class ThuPhiDAO {
                 return rs.next() && rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi kiểm tra trùng nộp tiền", e);
+            // Không xác nhận được -> coi như chưa nộp; ràng buộc UNIQUE ở DB vẫn chặn trùng khi insert.
+            System.err.println("Lỗi kiểm tra trùng nộp tiền: " + e.getMessage());
+            return false;
         }
     }
 }

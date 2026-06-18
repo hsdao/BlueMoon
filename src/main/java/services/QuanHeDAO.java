@@ -30,32 +30,11 @@ public class QuanHeDAO {
         return list;
     }
 
-    public QuanHe getById(int id) {
-        String sql = "SELECT * FROM quan_he WHERE id = ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSet(rs);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi getById: " + e.getMessage());
-        }
-
-        return null;
-    }
-
     public boolean insert(QuanHe q) {
         try (Connection conn = MysqlConnection.getConnection()) {
             return insertWithConnection(conn, q);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Lỗi QuanHeDAO: " + e.getMessage());
         }
         return false;
     }
@@ -86,66 +65,6 @@ public class QuanHeDAO {
         }
 
         return false;
-    }
-
-    public boolean update(QuanHe q) {
-        if (!isValid(q)) return false;
-
-        String sql = "UPDATE quan_he SET ten_quan_he = ? WHERE id = ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, q.getTenQuanHe());
-            ps.setInt(2, q.getId());
-
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi update QuanHe: " + e.getMessage());
-        }
-
-        return false;
-    }
-
-    public boolean delete(int id) {
-        String sql = "DELETE FROM quan_he WHERE id = ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi delete QuanHe: " + e.getMessage());
-        }
-
-        return false;
-    }
-
-    // ================== SEARCH ==================
-
-    public List<QuanHe> searchByName(String keyword) {
-        List<QuanHe> list = new ArrayList<>();
-        String sql = "SELECT * FROM quan_he WHERE ten_quan_he LIKE ?";
-
-        try (Connection conn = MysqlConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, "%" + keyword + "%");
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapResultSet(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Lỗi search QuanHe: " + e.getMessage());
-        }
-
-        return list;
     }
 
     // ================== HELPER ==================

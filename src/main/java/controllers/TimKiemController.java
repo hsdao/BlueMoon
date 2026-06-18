@@ -90,7 +90,7 @@ public class TimKiemController implements Initializable {
         colHkDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
         colHkSoTv.setCellValueFactory(new PropertyValueFactory<>("soThanhVien"));
         colHkSdt.setCellValueFactory(new PropertyValueFactory<>("soDienThoaiChuHo"));
-        colHkTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        colHkTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThaiLabel"));
         tblHoKhau.setSortPolicy(tv -> { FXCollections.sort(tv.getItems(), tv.getComparator()); return true; });
 
         // Nhân khẩu
@@ -99,34 +99,34 @@ public class TimKiemController implements Initializable {
         colNkGioiTinh.setCellValueFactory(new PropertyValueFactory<>("gioiTinh"));
         colNkNgheNghiep.setCellValueFactory(new PropertyValueFactory<>("ngheNghiep"));
         colNkSdt.setCellValueFactory(new PropertyValueFactory<>("soDienThoai"));
-        colNkTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        colNkTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThaiLabel"));
         tblNhanKhau.setSortPolicy(tv -> { FXCollections.sort(tv.getItems(), tv.getComparator()); return true; });
 
         // Khoản thu
         colKtMaKhoan.setCellValueFactory(new PropertyValueFactory<>("maKhoan"));
         colKtTenKhoan.setCellValueFactory(new PropertyValueFactory<>("tenKhoan"));
-        colKtLoai.setCellValueFactory(new PropertyValueFactory<>("loai"));
+        colKtLoai.setCellValueFactory(new PropertyValueFactory<>("loaiLabel"));
         colKtSoTien.setCellValueFactory(new PropertyValueFactory<>("soTien"));
-        colKtTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
+        colKtTrangThai.setCellValueFactory(new PropertyValueFactory<>("trangThaiLabel"));
         tblKhoanThu.setSortPolicy(tv -> { FXCollections.sort(tv.getItems(), tv.getComparator()); return true; });
     }
 
     private void setupFilterCombos() {
-        // Trạng thái hộ khẩu
+        // Trạng thái hộ khẩu — khớp với giá trị DB: ACTIVE / INACTIVE
         cmbTrangThaiHK.setItems(FXCollections.observableArrayList(
-            "", "Đang ở", "Đã chuyển đi", "Tạm vắng"
+            "", "ACTIVE", "INACTIVE"
         ));
         cmbTrangThaiHK.getSelectionModel().selectFirst();
 
-        // Loại khoản thu
+        // Loại khoản thu — khớp với giá trị DB (mã chuẩn): BAT_BUOC / TU_NGUYEN
         cmbLoaiKT.setItems(FXCollections.observableArrayList(
-            "", "Bắt buộc", "Tự nguyện"
+            "", "BAT_BUOC", "TU_NGUYEN"
         ));
         cmbLoaiKT.getSelectionModel().selectFirst();
 
-        // Trạng thái khoản thu
+        // Trạng thái khoản thu — khớp với giá trị DB (mã chuẩn): OPEN / CLOSED
         cmbTrangThaiKT.setItems(FXCollections.observableArrayList(
-            "", "Đang thu", "Đã kết thúc", "Tạm dừng"
+            "", "OPEN", "CLOSED"
         ));
         cmbTrangThaiKT.getSelectionModel().selectFirst();
     }

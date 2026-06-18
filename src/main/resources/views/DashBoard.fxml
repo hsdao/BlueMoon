@@ -31,7 +31,7 @@
                         <Region HBox.hgrow="ALWAYS" />
 
                         <!-- Đã thêm fx:id="btnTaoKhoanThu" và onAction -->
-                        <Button fx:id="btnTaoKhoanThu" onAction="#handleTaoKhoanThu" mnemonicParsing="false" style="-fx-background-color: #0969DA;" text="Tạo khoản thu" textFill="WHITE">
+                        <Button fx:id="btnTaoKhoanThu" onAction="#handleTaoKhoanThu" mnemonicParsing="false" styleClass="btn-primary" text="Tạo khoản thu">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
@@ -41,7 +41,7 @@
                         </Button>
 
                         <!-- Đã thêm fx:id="btnThuPhiNgay" và onAction -->
-                        <Button fx:id="btnThuPhiNgay" onAction="#handleThuPhiNgay" mnemonicParsing="false" style="-fx-background-color: #2DA44E;" text="Thu phí ngay" textFill="WHITE">
+                        <Button fx:id="btnThuPhiNgay" onAction="#handleThuPhiNgay" mnemonicParsing="false" styleClass="btn-success" text="Thu phí ngay">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
@@ -56,7 +56,7 @@
                 <HBox spacing="30.0">
                     <children>
                         <!-- Card 1: Tổng số hộ -->
-                        <VBox alignment="CENTER" prefHeight="120.0" style="-fx-background-color: WHITE; -fx-background-radius: 10; -fx-border-color: #D0D7DE; -fx-border-radius: 10;" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" prefHeight="120.0" styleClass="card" HBox.hgrow="ALWAYS">
                             <children>
                                 <Label text="Tổng số hộ khẩu" textFill="#57606a">
                                     <font>
@@ -72,7 +72,7 @@
                         </VBox>
 
                         <!-- Card 2: Tổng khoản thu -->
-                        <VBox alignment="CENTER" prefHeight="120.0" style="-fx-background-color: WHITE; -fx-background-radius: 10; -fx-border-color: #D0D7DE; -fx-border-radius: 10;" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" prefHeight="120.0" styleClass="card" HBox.hgrow="ALWAYS">
                             <children>
                                 <Label text="Tổng khoản thu" textFill="#57606a">
                                     <font>
@@ -88,7 +88,7 @@
                         </VBox>
 
                         <!-- Card 3: Doanh thu tháng -->
-                        <VBox alignment="CENTER" prefHeight="120.0" style="-fx-background-color: WHITE; -fx-background-radius: 10; -fx-border-color: #D0D7DE; -fx-border-radius: 10;" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" prefHeight="120.0" styleClass="card" HBox.hgrow="ALWAYS">
                             <children>
                                 <Label text="Doanh thu tháng này (VNĐ)" textFill="#57606a">
                                     <font>
@@ -106,7 +106,7 @@
                 </HBox>
 
                 <!-- KHỐI 3: BIỂU ĐỒ TRỰC QUAN -->
-                <VBox style="-fx-background-color: WHITE; -fx-background-radius: 10; -fx-border-color: #D0D7DE; -fx-border-radius: 10;" VBox.vgrow="ALWAYS">
+                <VBox styleClass="card" VBox.vgrow="ALWAYS">
                     <children>
                         <Label text="Biểu đồ thu phí các tháng gần đây">
                             <font>

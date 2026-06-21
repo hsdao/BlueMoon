@@ -39,6 +39,7 @@ public class FormKhoanThuController implements Initializable {
     @FXML private Label       lblSoTien;        // nhãn ô số tiền (đổi theo cách tính)
     @FXML private TextField   txtSoTien;
     @FXML private DatePicker  dtpHanNop;
+    @FXML private ComboBox<String> cmbTrangThai;  // Đang mở / Đã đóng
     @FXML private Button      btnLuu;
     @FXML private Button      btnHuy;
 
@@ -71,6 +72,10 @@ public class FormKhoanThuController implements Initializable {
         }
         cmbCachTinh.setValue(TinhPhiService.label(TinhPhiService.FLAT));
         txtSoThang.setText("1");
+
+        // Trạng thái khoản thu (mặc định Đang mở khi tạo mới)
+        cmbTrangThai.getItems().addAll("Đang mở", "Đã đóng");
+        cmbTrangThai.setValue("Đang mở");
 
         // Cập nhật giao diện theo cách tính (nhãn ô số tiền + hàng đơn giá xe)
         cmbCachTinh.valueProperty().addListener((o, a, b) -> capNhatTheoCachTinh());
@@ -152,6 +157,7 @@ public class FormKhoanThuController implements Initializable {
         txtSoTien.setText(kt.getSoTien() != null ? String.valueOf(kt.getSoTien()) : "");
         txtDonGiaXeMay.setText(kt.getDonGiaXeMay() != null ? String.valueOf(kt.getDonGiaXeMay()) : "");
         txtDonGiaOTo.setText(kt.getDonGiaOTo() != null ? String.valueOf(kt.getDonGiaOTo()) : "");
+        cmbTrangThai.setValue(Labels.khoanThuTrangThai(kt.getTrangThai())); // mã -> nhãn
         capNhatTheoCachTinh();
 
         if (kt.getHanNop() != null) {
@@ -216,10 +222,8 @@ public class FormKhoanThuController implements Initializable {
         LocalDate hanNopLocal = dtpHanNop.getValue();
         kt.setHanNop(hanNopLocal != null ? Date.valueOf(hanNopLocal) : null);
 
-        // Trạng thái mặc định khi tạo mới (mã chuẩn khớp ràng buộc CHECK của DB)
-        if (!isEditMode) {
-            kt.setTrangThai(Labels.KT_OPEN);
-        }
+        // Trạng thái lấy từ ComboBox: cho phép ĐÓNG (CLOSED) / mở lại (OPEN) khi sửa
+        kt.setTrangThai(Labels.khoanThuTrangThaiCode(cmbTrangThai.getValue()));
 
         // 4. Lưu vào DB
         boolean success;

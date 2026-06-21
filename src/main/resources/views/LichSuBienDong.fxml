@@ -103,7 +103,7 @@
                         </VBox>
 
                         <!-- Save -->
-                        <Button fx:id="btnLuuBienDong" text="Luu thay doi"
+                        <Button fx:id="btnLuuBienDong" text="Lưu thay đổi"
                                 prefWidth="322.0" prefHeight="42.0"
                                 onAction="#handleSaveChange"
                                 style="-fx-background-color: #5B4B8A; -fx-text-fill: white;

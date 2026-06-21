@@ -76,7 +76,7 @@
                                style="-fx-alignment: CENTER;" />
                   <TableColumn fx:id="colGhiChu" text="Ghi Chú"
                                style="-fx-alignment: CENTER_LEFT;" />
-                  <TableColumn fx:id="colHanhDong" text="Hanh Dong" prefWidth="90.0"
+                  <TableColumn fx:id="colHanhDong" text="Hành động" prefWidth="90.0"
                                style="-fx-alignment: CENTER;" />
                </columns>
             </TableView>

@@ -109,8 +109,10 @@ public class KhoanThuController implements Initializable {
         if (soNop > 0) {
             showWarning("Không thể xóa",
                     "Khoản thu \"" + selected.getTenKhoan() + "\" đã có " + soNop
-                    + " lượt nộp tiền. Không thể xóa (sẽ mất dữ liệu nộp). "
-                    + "Nếu muốn ngừng thu, hãy sửa trạng thái thành ĐÃ ĐÓNG.");
+                    + " lượt nộp tiền nên KHÔNG THỂ XÓA — xóa sẽ mất toàn bộ dữ liệu nộp tiền của các hộ.\n\n"
+                    + "Khoản đã phát sinh nộp tiền thì không xóa được dù ở trạng thái nào. "
+                    + "Thay vì xóa, chỉ cần ĐÓNG khoản (sửa trạng thái → \"Đã đóng\") để ngừng thu; "
+                    + "khoản đã đóng vẫn xem được ở Thống kê/Công nợ. Chỉ khoản CHƯA ai nộp mới xóa được.");
             return;
         }
 

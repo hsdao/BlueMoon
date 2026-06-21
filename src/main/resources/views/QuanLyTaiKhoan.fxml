@@ -27,7 +27,7 @@
             <!-- Tieu de -->
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label text="Quan Ly Tai Khoan"
+                  <Label text="Quản Lý Tài Khoản"
                          style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #24292F;" />
                </children>
             </HBox>
@@ -38,23 +38,23 @@
                          -fx-border-radius: 6; -fx-background-radius: 6;">
                <padding><Insets topRightBottomLeft="20.0"/></padding>
                <children>
-                  <Label text="Them tai khoan moi"
+                  <Label text="Thêm tài khoản mới"
                          style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1E3A5F;" />
                   <HBox alignment="CENTER_LEFT" spacing="12.0">
                      <children>
-                        <Label text="Username:" style="-fx-font-weight: bold; -fx-min-width: 90;" />
+                        <Label text="Tên đăng nhập:" style="-fx-font-weight: bold; -fx-min-width: 110;" />
                         <TextField fx:id="txtUsername" prefWidth="220.0" prefHeight="36.0"
-                                   promptText="Ten dang nhap..."
+                                   promptText="Nhập tên đăng nhập..."
                                    style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
-                        <Label text="Mat khau:" style="-fx-font-weight: bold; -fx-min-width: 80;" />
+                        <Label text="Mật khẩu:" style="-fx-font-weight: bold; -fx-min-width: 80;" />
                         <PasswordField fx:id="txtPassword" prefWidth="220.0" prefHeight="36.0"
-                                       promptText="Mat khau..."
+                                       promptText="Nhập mật khẩu..."
                                        style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
-                        <Label text="Role:" style="-fx-font-weight: bold; -fx-min-width: 50;" />
+                        <Label text="Vai trò:" style="-fx-font-weight: bold; -fx-min-width: 60;" />
                         <ComboBox fx:id="cmbRole" prefWidth="140.0" prefHeight="36.0"
-                                  promptText="-- Chon role --" />
+                                  promptText="-- Chọn vai trò --" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnThem" text="+ Them moi"
+                        <Button fx:id="btnThem" text="+ Thêm mới"
                                 onAction="#onThemClick" prefHeight="36.0" prefWidth="110.0"
                                 style="-fx-background-color: #0969DA; -fx-text-fill: white;
                                        -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
@@ -66,13 +66,13 @@
             <!-- Thanh tim kiem + lam moi -->
             <HBox alignment="CENTER_LEFT" spacing="12.0">
                <children>
-                  <Label text="Danh sach tai khoan"
+                  <Label text="Danh sách tài khoản"
                          style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1E3A5F;" />
                   <Region HBox.hgrow="ALWAYS" />
                   <TextField fx:id="txtTimKiem" prefHeight="36.0" prefWidth="260.0"
-                             promptText="Tim kiem username, role..."
+                             promptText="Tìm kiếm tên đăng nhập, vai trò..."
                              style="-fx-border-color: #D0D7DE; -fx-border-radius: 4; -fx-background-radius: 4;" />
-                  <Button fx:id="btnLamMoi" text="Lam moi"
+                  <Button fx:id="btnLamMoi" text="Làm mới"
                           onAction="#onLamMoiClick" prefHeight="36.0" prefWidth="90.0"
                           style="-fx-background-color: #6E7781; -fx-text-fill: white;
                                  -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" />
@@ -88,11 +88,11 @@
                <columns>
                   <TableColumn fx:id="colId"       text="ID"       prefWidth="60.0"
                                style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="colUsername" text="Username" prefWidth="250.0"
+                  <TableColumn fx:id="colUsername" text="Tên đăng nhập" prefWidth="250.0"
                                style="-fx-alignment: CENTER_LEFT;" />
-                  <TableColumn fx:id="colRole"     text="Role"     prefWidth="120.0"
+                  <TableColumn fx:id="colRole"     text="Vai trò"     prefWidth="120.0"
                                style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="colHanhDong" text="Hanh Dong"
+                  <TableColumn fx:id="colHanhDong" text="Hành động"
                                style="-fx-alignment: CENTER;" />
                </columns>
             </TableView>

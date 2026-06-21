@@ -49,6 +49,16 @@ public final class Labels {
         }
     }
 
+    /** Đổi NHÃN trạng thái khoản thu (ComboBox) sang MÃ để lưu DB. Mặc định OPEN. */
+    public static String khoanThuTrangThaiCode(String label) {
+        if (label == null) return KT_OPEN;
+        switch (label.trim()) {
+            case "Đã đóng":
+            case KT_CLOSED: return KT_CLOSED;
+            default:        return KT_OPEN;   // "Đang mở" hoặc giá trị khác
+        }
+    }
+
     /** Trạng thái hộ khẩu: ACTIVE / INACTIVE. */
     public static String hoKhauTrangThai(String code) {
         if (code == null) return "";
